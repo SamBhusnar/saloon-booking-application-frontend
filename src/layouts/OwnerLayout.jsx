@@ -1,0 +1,14 @@
+import React from "react";
+
+function OwnerLayout() {
+  return (
+    <div className="min-h-screen flex">
+      <aside className="w-64 bg-white border-r p-4"> Owner Sidebar </aside>
+      <main className="flex-1 p-6">
+        <Outlet />
+      </main>
+    </div>
+  );
+}
+
+export default OwnerLayout;
