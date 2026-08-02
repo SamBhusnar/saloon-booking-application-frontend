@@ -1,9 +1,26 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import AppRoutes from "./routes/AppRoutes";
 import { Toaster } from "react-hot-toast";
+import { useDispatch } from "react-redux";
+import { restoreSession } from "./features/auth/authSlice";
 
 function App() {
+  const dispatch = useDispatch();
+
+useEffect(() => {
+  try {
+    const auth = localStorage.getItem("auth");
+
+    if (auth) {
+      dispatch(restoreSession(JSON.parse(auth)));
+    }
+  } catch (error) {
+    localStorage.removeItem("auth");
+  }
+}, [dispatch]);
+
+
   return (
     <>
       <Toaster

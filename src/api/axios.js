@@ -1,11 +1,20 @@
+import axios from "axios";
+
 const api = axios.create({
-  baseURL: "http://localhost:5000/salon/api",
+  baseURL: import.meta.env.VITE_API_URL,
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("access_token");
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+  const auth = JSON.parse(localStorage.getItem("auth"));
+
+  console.log(" is user exists : ", auth);
+  if (auth?.accessToken) {
+    config.headers.Authorization = `Bearer ${auth.accessToken}`;
   }
   return config;
 });
+
+export default api;
