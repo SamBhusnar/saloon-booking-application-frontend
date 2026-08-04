@@ -29,3 +29,8 @@ export const register = createAsyncThunk(
     }
   },
 );
+export const getHomeRoute = (roles) => {
+  if (roles.includes("ADMIN")) return "/admin";
+  if (roles.includes("SALON_OWNER")) return "/owner";
+  return "/customer";
+};

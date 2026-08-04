@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { login, register } from "./authThunk";
+import { useNavigate } from "react-router-dom";
 
 const initialState = {
   user: null,
@@ -23,15 +24,15 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     restoreSession: (state, action) => {
-       state.user = action.payload.user;
-       state.accessToken = action.payload.accessToken;
-       state.refreshToken = action.payload.refreshToken;
-       state.tokenType = action.payload.tokenType;
-       state.expiresIn = action.payload.expiresIn;
-       state.refreshExpiresIn = action.payload.refreshExpiresIn;
-       state.status = action.payload.status;
-       state.error =null;
-       state.isLoading = false;
+      state.user = action.payload.user;
+      state.accessToken = action.payload.accessToken;
+      state.refreshToken = action.payload.refreshToken;
+      state.tokenType = action.payload.tokenType;
+      state.expiresIn = action.payload.expiresIn;
+      state.refreshExpiresIn = action.payload.refreshExpiresIn;
+      state.status = action.payload.status;
+      state.error = null;
+      state.isLoading = false;
     },
     logout: (state) => {
       localStorage.removeItem("auth");
@@ -61,7 +62,7 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.error = null;
         state.status = "authenticated";
-
+      
         localStorage.setItem(
           "auth",
           JSON.stringify({

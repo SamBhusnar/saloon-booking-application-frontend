@@ -17,10 +17,15 @@ import AuthLinks from "../components/form/AuthLinks";
 import { User, Lock } from "lucide-react";
 
 import { login } from "../features/auth/authThunk";
+import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import { getHomeRoute } from "../features/auth/authThunk";
 
 function LoginPage() {
   const { isLoading } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+
+  const navigate = useNavigate();
 
   const {
     register,
@@ -34,12 +39,21 @@ function LoginPage() {
     },
   });
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     if (isLoading) return;
 
-    console.log(data);
+    try {
+      const response = await dispatch(login(data)).unwrap();
 
-    dispatch(login(data));
+      toast.success("Login successful.");
+console.log(response);
+
+      navigate(getHomeRoute(response.profile.roles), { replace: true });
+    } catch (err) {
+      console.error(err);
+
+      toast.error(err?.message || "Login failed. Please try again.");
+    }
   };
 
   return (

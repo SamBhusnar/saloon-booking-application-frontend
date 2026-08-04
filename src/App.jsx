@@ -2,24 +2,30 @@ import { useState, useEffect } from "react";
 import "./App.css";
 import AppRoutes from "./routes/AppRoutes";
 import { Toaster } from "react-hot-toast";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { restoreSession } from "./features/auth/authSlice";
+import { useNavigate } from "react-router-dom";
+import { getHomeRoute } from "./features/auth/authThunk";
 
 function App() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-useEffect(() => {
-  try {
-    const auth = localStorage.getItem("auth");
+  useEffect(() => {
+    try {
+      const authData = localStorage.getItem("auth");
 
-    if (auth) {
-      dispatch(restoreSession(JSON.parse(auth)));
+      if (!authData) return;
+
+      const parsedAuth = JSON.parse(authData);
+
+      dispatch(restoreSession(parsedAuth));
+
+      navigate(getHomeRoute(parsedAuth.user.roles), { replace: true });
+    } catch (error) {
+      localStorage.removeItem("auth");
     }
-  } catch (error) {
-    localStorage.removeItem("auth");
-  }
-}, [dispatch]);
-
+  }, [dispatch, navigate]);
 
   return (
     <>

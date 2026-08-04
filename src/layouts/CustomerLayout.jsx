@@ -1,11 +1,9 @@
-import React from "react";
-import { Outlet } from "react-router-dom";
+import DashboardLayout from "./DashboardLayout";
+import CustomerSidebar from "../components/customer/CustomerSidebar";
 
 function CustomerLayout() {
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Outlet />
-    </div>
+    <DashboardLayout sidebar={<CustomerSidebar />} title="Customer Dashboard" />
   );
 }
 
