@@ -46,7 +46,7 @@ function LoginPage() {
       const response = await dispatch(login(data)).unwrap();
 
       toast.success("Login successful.");
-console.log(response);
+      console.log(response);
 
       navigate(getHomeRoute(response.profile.roles), { replace: true });
     } catch (err) {

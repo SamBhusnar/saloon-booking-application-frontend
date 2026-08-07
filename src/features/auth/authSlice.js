@@ -58,11 +58,7 @@ const authSlice = createSlice({
         state.status = "loading";
       })
 
-      .addCase(login.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.error = null;
-        state.status = "authenticated";
-      
+      .addCase(login.fulfilled,    (state, action) => {
         localStorage.setItem(
           "auth",
           JSON.stringify({
@@ -75,6 +71,9 @@ const authSlice = createSlice({
             status: "authenticated",
           }),
         );
+        state.isLoading = false;
+        state.error = null;
+        state.status = "authenticated";
       })
 
       .addCase(login.rejected, (state, action) => {

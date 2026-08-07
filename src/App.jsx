@@ -6,10 +6,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { restoreSession } from "./features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
 import { getHomeRoute } from "./features/auth/authThunk";
+import { useLocation } from "react-router-dom";
 
 function App() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     try {
@@ -25,7 +27,29 @@ function App() {
     } catch (error) {
       localStorage.removeItem("auth");
     }
-  }, [dispatch, navigate]);
+  }, []);
+
+  // useEffect(() => {
+  //   try {
+  //     const authData = localStorage.getItem("auth");
+
+  //     if (!authData) return;
+
+  //     const parsedAuth = JSON.parse(authData);
+
+  //     dispatch(restoreSession(parsedAuth));
+
+  //     const publicRoutes = ["/", "/login", "/register", "/become-member"];
+
+  //     if (publicRoutes.includes(location.pathname)) {
+  //       navigate(getHomeRoute(parsedAuth.user.roles), {
+  //         replace: true,
+  //       });
+  //     }
+  //   } catch {
+  //     localStorage.removeItem("auth");
+  //   }
+  // }, []);
 
   return (
     <>

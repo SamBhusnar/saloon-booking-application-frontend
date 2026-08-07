@@ -1,83 +1,190 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
-// Public Pages
+// ================= PUBLIC PAGES =================
+
 import HomePage from "../pages/HomePage";
 import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
 import BecomeMemberPage from "../pages/BecomeMemberPage";
 
-// Layouts
+// ================= LAYOUTS =================
+
 import CustomerLayout from "../layouts/CustomerLayout";
 import OwnerLayout from "../layouts/OwnerLayout";
 
-// Protected Routes
+// ================= PROTECTED ROUTES =================
+
 import ProtectedRoute from "./ProtectedRoute";
 import RoleProtectedRoute from "./RoleProtectedRoute";
 
-// Customer Pages
+// ================= OWNER SALON PAGES =================
+
+import SalonListPage from "../pages/owner/salon/SalonListPage";
+import CreateSalonPage from "../pages/owner/salon/CreateSalonPage";
+import EditSalonPage from "../pages/owner/salon/EditSalonPage";
+
+// ================= OWNER CATEGORY PAGES =================
+
+import CategoryListPage from "../pages/owner/category/CategoryListPage";
+import CreateCategoryPage from "../pages/owner/category/CreateCategoryPage";
+
+// ================= CUSTOMER PAGES =================
+
 // import CustomerDashboardPage from "../pages/customer/CustomerDashboardPage";
 // import CustomerBookingsPage from "../pages/customer/CustomerBookingsPage";
 // import CustomerProfilePage from "../pages/customer/CustomerProfilePage";
 
-// Owner Pages
+// ================= OWNER PAGES =================
+
 // import OwnerDashboardPage from "../pages/owner/OwnerDashboardPage";
-// import SalonPage from "../pages/owner/SalonPage";
-// import CategoryPage from "../pages/owner/CategoryPage";
-// import ServicePage from "../pages/owner/ServicePage";
+// import ServicePage from "../pages/owner/service/ServicePage";
 // import AnalyticsPage from "../pages/owner/AnalyticsPage";
 
 function AppRoutes() {
   return (
-    
-      <Routes>
-        {/* ================= PUBLIC ================= */}
+    <Routes>
+      {/* ===========================
+          PUBLIC ROUTES
+      =========================== */}
 
-        <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/become-member" element={<BecomeMemberPage />} />
+      <Route path="/" element={<HomePage />} />
 
-        {/* ================ PROTECTED ================ */}
+      <Route path="/login" element={<LoginPage />} />
 
-        <Route element={<ProtectedRoute />}>
-          {/* CUSTOMER */}
+      <Route path="/register" element={<RegisterPage />} />
 
-          <Route path="/customer" element={<CustomerLayout />}>
-            {/* <Route index element={<CustomerDashboardPage />} /> */}
+      <Route path="/become-member" element={<BecomeMemberPage />} />
 
-            {/* <Route path="salons" element={<SalonListPage />} /> */}
+      {/* ===========================
+          PROTECTED ROUTES
+      =========================== */}
 
-            {/* <Route path="bookings" element={<CustomerBookingsPage />} /> */}
+      <Route element={<ProtectedRoute />}>
+        {/* ===========================
+            CUSTOMER
+        =========================== */}
 
-            {/* <Route path="profile" element={<CustomerProfilePage />} /> */}
-          </Route>
+        <Route path="/customer" element={<CustomerLayout />}>
+          {/* <Route
+            index
+            element={<CustomerDashboardPage />}
+          /> */}
 
-          {/* OWNER */}
+          {/* <Route
+            path="salons"
+            element={<SalonListPage />}
+          /> */}
 
-          <Route
-            element={
-              <RoleProtectedRoute allowedRoles={["SALON_OWNER", "ADMIN"]} />
-            }
-          >
-            <Route path="/owner" element={<OwnerLayout />}>
-              {/* <Route index element={<OwnerDashboardPage />} /> */}
+          {/* <Route
+            path="bookings"
+            element={<CustomerBookingsPage />}
+          /> */}
 
-              {/* <Route path="salons" element={<SalonPage />} /> */}
-
-              {/* <Route path="categories" element={<CategoryPage />} /> */}
-
-              {/* <Route path="services" element={<ServicePage />} /> */}
-
-              {/* <Route path="analytics" element={<AnalyticsPage />} /> */}
-            </Route>
-          </Route>
+          {/* <Route
+            path="profile"
+            element={<CustomerProfilePage />}
+          /> */}
         </Route>
 
-        {/* <Route path="/unauthorized" element={<UnauthorizedPage />} /> */}
+        {/* ===========================
+            OWNER
+        =========================== */}
 
-        {/* <Route path="*" element={<NotFoundPage />} /> */}
-      </Routes>
-     
+        <Route
+          element={
+            <RoleProtectedRoute allowedRoles={["SALON_OWNER", "ADMIN"]} />
+          }
+        >
+          <Route path="/owner" element={<OwnerLayout />}>
+            {/* ===========================
+                OWNER DASHBOARD
+            =========================== */}
+
+            {/* <Route
+              index
+              element={<OwnerDashboardPage />}
+            /> */}
+
+            {/* ===========================
+                SALON MANAGEMENT
+            =========================== */}
+
+            {/* Salon List */}
+
+            <Route path="salons" element={<SalonListPage />} />
+
+            {/* Create Salon */}
+
+            <Route path="salons/create" element={<CreateSalonPage />} />
+
+            {/* Edit Salon */}
+
+            <Route path="salons/edit/:salonId" element={<EditSalonPage />} />
+
+            {/* ===========================
+                CATEGORY MANAGEMENT
+            =========================== */}
+
+            {/* Category List */}
+
+            <Route
+              path="salons/:salonId/categories"
+              element={<CategoryListPage />}
+            />
+
+            {/* Create Category */}
+
+            <Route
+              path="salons/:salonId/categories/create"
+              element={<CreateCategoryPage />}
+            />
+
+            {/* ===========================
+                SERVICE MANAGEMENT
+            =========================== */}
+
+            {/*
+
+            Later:
+
+            <Route
+              path="salons/:salonId/categories/:categoryId/services"
+              element={<ServiceListPage />}
+            />
+
+            <Route
+              path="salons/:salonId/categories/:categoryId/services/create"
+              element={<CreateServicePage />}
+            />
+
+            */}
+
+            {/* ===========================
+                ANALYTICS
+            =========================== */}
+
+            {/* <Route
+              path="analytics"
+              element={<AnalyticsPage />}
+            /> */}
+          </Route>
+        </Route>
+      </Route>
+
+      {/* ===========================
+          COMMON PAGES
+      =========================== */}
+
+      {/* <Route
+        path="/unauthorized"
+        element={<UnauthorizedPage />}
+      /> */}
+
+      {/* <Route
+        path="*"
+        element={<NotFoundPage />}
+      /> */}
+    </Routes>
   );
 }
 

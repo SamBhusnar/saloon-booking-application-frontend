@@ -1,128 +1,184 @@
 import {
   LayoutDashboard,
   Store,
-  Grid2x2,
   Scissors,
   CalendarDays,
   Users,
   BarChart3,
   User,
-  LogOut,
 } from "lucide-react";
+
 import { NavLink } from "react-router-dom";
+
 import LogoutButton from "../common/LogoutButton";
 
+/* ===========================
+   NAV ITEM STYLE
+=========================== */
+
 const navItemClass = ({ isActive }) =>
-  `flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition
-   ${
-     isActive
-       ? "bg-emerald-100 text-emerald-700"
-       : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
-   }`;
+  `group flex items-center gap-3 rounded-lg px-3.5 py-2.5 text-sm font-medium transition-all duration-200
+  ${
+    isActive
+      ? "bg-emerald-50 text-emerald-700 shadow-sm"
+      : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+  }`;
+
+/* ===========================
+   SIDEBAR
+=========================== */
 
 function OwnerSidebar() {
   return (
-    <div className="flex h-screen flex-col bg-white">
-      {/* Logo */}
-      <div className="border-b border-slate-200 px-6 py-5">
-        <h2 className="text-2xl font-bold text-emerald-600">SalonBook</h2>
+    <aside className="flex h-full w-full flex-col bg-white">
+      {/* ===========================
+          LOGO / BRAND
+      =========================== */}
 
-        <p className="mt-1 text-xs text-slate-500">Salon Owner Panel</p>
+      <div className="border-b border-slate-200 px-5 py-5">
+        <h2 className="text-2xl font-bold tracking-tight text-emerald-600">
+          SalonBook
+        </h2>
+
+        <p className="mt-1 text-xs font-medium text-slate-400">
+          Salon Owner Panel
+        </p>
       </div>
 
-      {/* Navigation */}
-      <nav className="flex-1 overflow-y-auto px-3 py-5 space-y-8">
-        {/* Dashboard */}
-        <div>
-          <p className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-slate-400">
-            Dashboard
-          </p>
+      {/* ===========================
+          NAVIGATION
+      =========================== */}
 
-          <div className="space-y-1">
-            <NavLink to="/owner" end className={navItemClass}>
-              <LayoutDashboard size={20} />
+      <nav className="min-h-0 flex-1 overflow-y-auto px-3 py-5">
+        <div className="space-y-6">
+          {/* ===========================
+              DASHBOARD
+          =========================== */}
+
+          <div>
+            <p className="mb-2 px-3 text-[11px] font-semibold uppercase tracking-wider text-slate-400">
               Dashboard
-            </NavLink>
+            </p>
+
+            <div className="space-y-1">
+              <NavLink to="/owner" end className={navItemClass}>
+                <LayoutDashboard
+                  size={19}
+                  strokeWidth={1.8}
+                  className="shrink-0"
+                />
+
+                <span>Dashboard</span>
+              </NavLink>
+            </div>
           </div>
-        </div>
 
-        {/* Salon Management */}
-        <div>
-          <p className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-slate-400">
-            Salon Management
-          </p>
+          {/* ===========================
+              SALON MANAGEMENT
+          =========================== */}
 
-          <div className="space-y-1">
-            <NavLink to="/owner/salons" className={navItemClass}>
-              <Store size={20} />
-              Salons
-            </NavLink>
+          <div>
+            <p className="mb-2 px-3 text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+              Salon Management
+            </p>
 
-            <NavLink to="/owner/categories" className={navItemClass}>
-              <Grid2x2 size={20} />
-              Categories
-            </NavLink>
+            <div className="space-y-1">
+              {/* Salons */}
 
-            <NavLink to="/owner/services" className={navItemClass}>
-              <Scissors size={20} />
-              Services
-            </NavLink>
+              <NavLink to="/owner/salons" className={navItemClass}>
+                <Store size={19} strokeWidth={1.8} className="shrink-0" />
+
+                <span>Salons</span>
+              </NavLink>
+
+              {/* Services */}
+
+              <NavLink to="/owner/services" className={navItemClass}>
+                <Scissors size={19} strokeWidth={1.8} className="shrink-0" />
+
+                <span>Services</span>
+              </NavLink>
+            </div>
           </div>
-        </div>
 
-        {/* Booking */}
-        <div>
-          <p className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-slate-400">
-            Booking
-          </p>
+          {/* ===========================
+              BOOKING MANAGEMENT
+          =========================== */}
 
-          <div className="space-y-1">
-            <NavLink to="/owner/bookings" className={navItemClass}>
-              <CalendarDays size={20} />
-              Bookings
-            </NavLink>
+          <div>
+            <p className="mb-2 px-3 text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+              Booking Management
+            </p>
 
-            <NavLink to="/owner/customers" className={navItemClass}>
-              <Users size={20} />
-              Customers
-            </NavLink>
+            <div className="space-y-1">
+              {/* Bookings */}
+
+              <NavLink to="/owner/bookings" className={navItemClass}>
+                <CalendarDays
+                  size={19}
+                  strokeWidth={1.8}
+                  className="shrink-0"
+                />
+
+                <span>Bookings</span>
+              </NavLink>
+
+              {/* Customers */}
+
+              <NavLink to="/owner/customers" className={navItemClass}>
+                <Users size={19} strokeWidth={1.8} className="shrink-0" />
+
+                <span>Customers</span>
+              </NavLink>
+            </div>
           </div>
-        </div>
 
-        {/* Analytics */}
-        <div>
-          <p className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-slate-400">
-            Analytics
-          </p>
+          {/* ===========================
+              ANALYTICS
+          =========================== */}
 
-          <div className="space-y-1">
-            <NavLink to="/owner/analytics" className={navItemClass}>
-              <BarChart3 size={20} />
+          <div>
+            <p className="mb-2 px-3 text-[11px] font-semibold uppercase tracking-wider text-slate-400">
               Analytics
-            </NavLink>
+            </p>
+
+            <div className="space-y-1">
+              <NavLink to="/owner/analytics" className={navItemClass}>
+                <BarChart3 size={19} strokeWidth={1.8} className="shrink-0" />
+
+                <span>Analytics</span>
+              </NavLink>
+            </div>
           </div>
-        </div>
 
-        {/* Account */}
-        <div>
-          <p className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-slate-400">
-            Account
-          </p>
+          {/* ===========================
+              ACCOUNT
+          =========================== */}
 
-          <div className="space-y-1">
-            <NavLink to="/owner/profile" className={navItemClass}>
-              <User size={20} />
-              Profile
-            </NavLink>
+          <div>
+            <p className="mb-2 px-3 text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+              Account
+            </p>
+
+            <div className="space-y-1">
+              <NavLink to="/owner/profile" className={navItemClass}>
+                <User size={19} strokeWidth={1.8} className="shrink-0" />
+
+                <span>Profile</span>
+              </NavLink>
+            </div>
           </div>
         </div>
       </nav>
 
-      {/* Logout */}
-      <div className="border-t border-slate-200 p-3">
+      {/* ===========================
+          LOGOUT
+      =========================== */}
+
+      <div className="shrink-0 border-t border-slate-200 bg-white p-3">
         <LogoutButton />
       </div>
-    </div>
+    </aside>
   );
 }
 

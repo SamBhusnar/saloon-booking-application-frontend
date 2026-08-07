@@ -9,34 +9,76 @@ const api = axios.create({
 
 const AUTH_ENDPOINTS = ["/auth/login", "/auth/signup", "/auth/refresh-token"];
 
-api.interceptors.request.use(
-  (config) => {
-    const url = config.url ?? "";
+ api.interceptors.request.use(
+   (config) => {
+     const url = config.url ?? "";
 
-    const isAuthEndpoint = AUTH_ENDPOINTS.some((endpoint) =>
-      url.includes(endpoint),
-    );
+     const isAuthEndpoint = AUTH_ENDPOINTS.some((endpoint) =>
+       url.includes(endpoint),
+     );
 
-    if (isAuthEndpoint) {
-      return config;
-    }
+     /*
+      * =========================================
+      * FORM DATA REQUEST
+      * =========================================
+      *
+      * Do not send:
+      *
+      * Content-Type: application/json
+      *
+      * for FormData requests.
+      *
+      * Browser/Axios will automatically generate:
+      *
+      * multipart/form-data; boundary=...
+      */
 
-    let auth = null;
+     if (config.data instanceof FormData) {
+       if (config.headers?.delete) {
+         config.headers.delete("Content-Type");
+       } else {
+         delete config.headers["Content-Type"];
+       }
+     }
 
-    try {
-      auth = JSON.parse(localStorage.getItem("auth"));
-    } catch {
-      localStorage.removeItem("auth");
-    }
+     /*
+      * =========================================
+      * AUTH ENDPOINT
+      * =========================================
+      */
 
-    if (auth?.accessToken && !config.headers.Authorization) {
-      config.headers.Authorization = `Bearer ${auth.accessToken}`;
-    }
+     if (isAuthEndpoint) {
+       return config;
+     }
 
-    return config;
-  },
-  (error) => Promise.reject(error),
-);
+     /*
+      * =========================================
+      * GET AUTH DATA
+      * =========================================
+      */
+
+     let auth = null;
+
+     try {
+       auth = JSON.parse(localStorage.getItem("auth"));
+     } catch {
+       localStorage.removeItem("auth");
+     }
+
+     /*
+      * =========================================
+      * ADD ACCESS TOKEN
+      * =========================================
+      */
+
+     if (auth?.accessToken && !config.headers.Authorization) {
+       config.headers.Authorization = `Bearer ${auth.accessToken}`;
+     }
+
+     return config;
+   },
+   (error) => Promise.reject(error),
+ );
 
 /* ===========================
    RESPONSE INTERCEPTOR
@@ -49,6 +91,7 @@ api.interceptors.response.use(
 
   async (error) => {
     const originalRequest = error.config;
+    const url = originalRequest.url ?? "";
     if (!originalRequest) {
       return Promise.reject(error);
     }
