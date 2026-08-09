@@ -1,3 +1,4 @@
+
 import { Routes, Route } from "react-router-dom";
 
 // ================= PUBLIC PAGES =================
@@ -28,6 +29,12 @@ import EditSalonPage from "../pages/owner/salon/EditSalonPage";
 import CategoryListPage from "../pages/owner/category/CategoryListPage";
 import CreateCategoryPage from "../pages/owner/category/CreateCategoryPage";
 
+// ================= OWNER SERVICE PAGES =================
+
+import ServiceListPage from "../pages/owner/service/ServiceListPage";
+import CreateServicePage from "../pages/owner/service/CreateServicePage";
+import EditServicePage from "../pages/owner/service/EditServicePage";
+
 // ================= CUSTOMER PAGES =================
 
 // import CustomerDashboardPage from "../pages/customer/CustomerDashboardPage";
@@ -37,12 +44,13 @@ import CreateCategoryPage from "../pages/owner/category/CreateCategoryPage";
 // ================= OWNER PAGES =================
 
 // import OwnerDashboardPage from "../pages/owner/OwnerDashboardPage";
-// import ServicePage from "../pages/owner/service/ServicePage";
 // import AnalyticsPage from "../pages/owner/AnalyticsPage";
+
 
 function AppRoutes() {
   return (
     <Routes>
+
       {/* ===========================
           PUBLIC ROUTES
       =========================== */}
@@ -53,18 +61,27 @@ function AppRoutes() {
 
       <Route path="/register" element={<RegisterPage />} />
 
-      <Route path="/become-member" element={<BecomeMemberPage />} />
+      <Route
+        path="/become-member"
+        element={<BecomeMemberPage />}
+      />
+
 
       {/* ===========================
           PROTECTED ROUTES
       =========================== */}
 
       <Route element={<ProtectedRoute />}>
+
         {/* ===========================
             CUSTOMER
         =========================== */}
 
-        <Route path="/customer" element={<CustomerLayout />}>
+        <Route
+          path="/customer"
+          element={<CustomerLayout />}
+        >
+
           {/* <Route
             index
             element={<CustomerDashboardPage />}
@@ -84,7 +101,9 @@ function AppRoutes() {
             path="profile"
             element={<CustomerProfilePage />}
           /> */}
+
         </Route>
+
 
         {/* ===========================
             OWNER
@@ -92,10 +111,17 @@ function AppRoutes() {
 
         <Route
           element={
-            <RoleProtectedRoute allowedRoles={["SALON_OWNER", "ADMIN"]} />
+            <RoleProtectedRoute
+              allowedRoles={["SALON_OWNER", "ADMIN"]}
+            />
           }
         >
-          <Route path="/owner" element={<OwnerLayout />}>
+
+          <Route
+            path="/owner"
+            element={<OwnerLayout />}
+          >
+
             {/* ===========================
                 OWNER DASHBOARD
             =========================== */}
@@ -105,21 +131,32 @@ function AppRoutes() {
               element={<OwnerDashboardPage />}
             /> */}
 
+
             {/* ===========================
                 SALON MANAGEMENT
             =========================== */}
 
             {/* Salon List */}
 
-            <Route path="salons" element={<SalonListPage />} />
+            <Route
+              path="salons"
+              element={<SalonListPage />}
+            />
 
             {/* Create Salon */}
 
-            <Route path="salons/create" element={<CreateSalonPage />} />
+            <Route
+              path="salons/create"
+              element={<CreateSalonPage />}
+            />
 
             {/* Edit Salon */}
 
-            <Route path="salons/edit/:salonId" element={<EditSalonPage />} />
+            <Route
+              path="salons/edit/:salonId"
+              element={<EditSalonPage />}
+            />
+
 
             {/* ===========================
                 CATEGORY MANAGEMENT
@@ -139,25 +176,32 @@ function AppRoutes() {
               element={<CreateCategoryPage />}
             />
 
+
             {/* ===========================
                 SERVICE MANAGEMENT
             =========================== */}
 
-            {/*
-
-            Later:
+            {/* Service List */}
 
             <Route
               path="salons/:salonId/categories/:categoryId/services"
               element={<ServiceListPage />}
             />
 
+            {/* Create Service */}
+
             <Route
               path="salons/:salonId/categories/:categoryId/services/create"
               element={<CreateServicePage />}
             />
 
-            */}
+            {/* Edit Service */}
+
+            <Route
+              path="salons/:salonId/categories/:categoryId/services/edit/:serviceId"
+              element={<EditServicePage />}
+            />
+
 
             {/* ===========================
                 ANALYTICS
@@ -167,9 +211,13 @@ function AppRoutes() {
               path="analytics"
               element={<AnalyticsPage />}
             /> */}
+
           </Route>
+
         </Route>
+
       </Route>
+
 
       {/* ===========================
           COMMON PAGES
@@ -184,8 +232,11 @@ function AppRoutes() {
         path="*"
         element={<NotFoundPage />}
       /> */}
+
     </Routes>
   );
 }
 
 export default AppRoutes;
+
+

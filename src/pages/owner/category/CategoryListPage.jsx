@@ -2,7 +2,13 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-hot-toast";
-import { Plus, Trash2, ArrowLeft, FolderOpen } from "lucide-react";
+import {
+  Plus,
+  Trash2,
+  ArrowLeft,
+  FolderOpen,
+  Scissors,
+} from "lucide-react";
 
 import {
   getCategoriesBySalonId,
@@ -15,12 +21,12 @@ function CategoryListPage() {
 
   const { salonId } = useParams();
 
-  const { categories, loading, error } = useSelector((state) => state.category);
-
-  const { user } = useSelector((state) => state.auth);
+  const { categories, loading, error } = useSelector(
+    (state) => state.category,
+  );
 
   /* ===========================
-       LOAD CATEGORIES
+     LOAD CATEGORIES
   =========================== */
 
   useEffect(() => {
@@ -30,7 +36,7 @@ function CategoryListPage() {
   }, [dispatch, salonId]);
 
   /* ===========================
-       DELETE CATEGORY
+     DELETE CATEGORY
   =========================== */
 
   const handleDeleteCategory = async (categoryId) => {
@@ -53,31 +59,47 @@ function CategoryListPage() {
       console.error("Delete category error:", error);
 
       toast.error(
-        error?.message || error?.error || "Failed to delete category.",
+        error?.message ||
+          error?.error ||
+          "Failed to delete category.",
       );
     }
   };
 
   /* ===========================
-       INVALID SALON ID
+     OPEN CATEGORY SERVICES
+  =========================== */
+
+  const handleServices = (categoryId) => {
+    navigate(
+      `/owner/salons/${salonId}/categories/${categoryId}/services`,
+    );
+  };
+
+  /* ===========================
+     INVALID SALON ID
   =========================== */
 
   if (!salonId) {
     return (
-      <div className="flex min-h-[400px] items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-xl font-semibold text-red-600">
+      <div className="flex min-h-[60vh] items-center justify-center">
+        <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-8 text-center shadow-sm">
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-red-50">
+            <FolderOpen size={30} className="text-red-500" />
+          </div>
+
+          <h2 className="mt-5 text-xl font-semibold text-slate-900">
             Salon ID is missing
           </h2>
 
-          <p className="mt-2 text-slate-500">
+          <p className="mt-2 text-sm text-slate-500">
             Cannot load categories without a salon.
           </p>
 
           <button
             type="button"
             onClick={() => navigate("/owner/salons")}
-            className="mt-5 rounded-lg bg-emerald-600 px-5 py-2.5 text-white hover:bg-emerald-700"
+            className="mt-6 rounded-xl bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700"
           >
             Go to Salons
           </button>
@@ -87,41 +109,51 @@ function CategoryListPage() {
   }
 
   /* ===========================
-       LOADING
+     LOADING
   =========================== */
 
   if (loading.fetch) {
     return (
-      <div className="flex min-h-[400px] items-center justify-center">
+      <div className="flex min-h-[60vh] items-center justify-center">
         <div className="text-center">
           <div className="mx-auto h-10 w-10 animate-spin rounded-full border-4 border-slate-200 border-t-emerald-600" />
 
-          <p className="mt-4 text-slate-500">Loading categories...</p>
+          <p className="mt-4 text-sm text-slate-500">
+            Loading categories...
+          </p>
         </div>
       </div>
     );
   }
 
   /* ===========================
-       ERROR
+     ERROR
   =========================== */
 
   if (error) {
     return (
-      <div className="flex min-h-[400px] items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-xl font-semibold text-red-600">
+      <div className="flex min-h-[60vh] items-center justify-center">
+        <div className="w-full max-w-md rounded-2xl border border-red-100 bg-white p-8 text-center shadow-sm">
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-red-50">
+            <FolderOpen size={30} className="text-red-500" />
+          </div>
+
+          <h2 className="mt-5 text-xl font-semibold text-slate-900">
             Something went wrong
           </h2>
 
-          <p className="mt-2 text-slate-500">
-            {error?.message || error?.error || "Unable to load categories."}
+          <p className="mt-2 text-sm text-slate-500">
+            {error?.message ||
+              error?.error ||
+              "Unable to load categories."}
           </p>
 
           <button
             type="button"
-            onClick={() => dispatch(getCategoriesBySalonId(salonId))}
-            className="mt-5 rounded-lg bg-emerald-600 px-5 py-2.5 text-white hover:bg-emerald-700"
+            onClick={() =>
+              dispatch(getCategoriesBySalonId(salonId))
+            }
+            className="mt-6 rounded-xl bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700"
           >
             Try Again
           </button>
@@ -130,66 +162,78 @@ function CategoryListPage() {
     );
   }
 
-  /* ===========================
-       PAGE
-  =========================== */
-
   return (
-    <div className="mx-auto max-w-7xl">
+    <div className="space-y-7">
       {/* ===========================
           HEADER
       =========================== */}
 
-      <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
         <div>
           {/* Back */}
 
           <button
             type="button"
             onClick={() => navigate("/owner/salons")}
-            className="mb-3 flex items-center gap-2 text-sm text-slate-500 transition hover:text-slate-900"
+            className="mb-4 flex items-center gap-2 text-sm font-medium text-slate-500 transition hover:text-slate-900"
           >
             <ArrowLeft size={17} />
             Back to Salons
           </button>
 
-          <div className="flex items-center gap-3">
-            <div className="rounded-xl bg-emerald-100 p-3 text-emerald-600">
-              <FolderOpen size={24} />
+          <div className="flex items-center gap-4">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-600">
+              <FolderOpen size={25} />
             </div>
 
             <div>
-              <h1 className="text-3xl font-bold text-slate-900">Categories</h1>
+              <h1 className="text-3xl font-bold tracking-tight text-slate-900">
+                Categories
+              </h1>
 
-              <p className="mt-1 text-slate-500">
-                Manage categories for this salon.
+              <p className="mt-1 text-sm text-slate-500">
+                Manage categories and their services.
               </p>
             </div>
           </div>
         </div>
 
-        {/* Create Category */}
+        {/* ===========================
+            ADD CATEGORY
+        =========================== */}
 
         <button
           type="button"
-          onClick={() => navigate(`/owner/salons/${salonId}/categories/create`)}
-          className="flex items-center justify-center gap-2 rounded-lg bg-emerald-600 px-5 py-3 font-medium text-white shadow-sm transition hover:bg-emerald-700"
+          onClick={() =>
+            navigate(
+              `/owner/salons/${salonId}/categories/create`,
+            )
+          }
+          className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700"
         >
-          <Plus size={20} />
+          <Plus size={19} />
           Add Category
         </button>
       </div>
 
       {/* ===========================
-          CATEGORY COUNT
+          CATEGORY SUMMARY
       =========================== */}
 
-      <div className="mb-6 rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
-        <p className="text-sm text-slate-500">Total Categories</p>
+      <div className="flex items-center justify-between rounded-2xl border border-slate-200 bg-white px-5 py-4 shadow-sm">
+        <div>
+          <p className="text-sm font-medium text-slate-500">
+            Total Categories
+          </p>
 
-        <p className="mt-1 text-2xl font-bold text-slate-900">
-          {categories.length}
-        </p>
+          <p className="mt-1 text-2xl font-bold text-slate-900">
+            {categories.length}
+          </p>
+        </div>
+
+        <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
+          <FolderOpen size={22} />
+        </div>
       </div>
 
       {/* ===========================
@@ -197,26 +241,28 @@ function CategoryListPage() {
       =========================== */}
 
       {categories.length === 0 && (
-        <div className="rounded-xl border border-dashed border-slate-300 bg-white py-16 text-center">
-          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-slate-100">
+        <div className="rounded-2xl border border-dashed border-slate-300 bg-white px-6 py-16 text-center">
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-slate-100">
             <FolderOpen size={30} className="text-slate-400" />
           </div>
 
-          <h2 className="mt-5 text-xl font-semibold text-slate-800">
-            No categories found
+          <h2 className="mt-5 text-xl font-semibold text-slate-900">
+            No categories yet
           </h2>
 
-          <p className="mx-auto mt-2 max-w-md text-slate-500">
-            This salon doesn't have any categories yet. Create your first
-            category to start adding services.
+          <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-slate-500">
+            Create your first category to start organizing
+            services for your salon.
           </p>
 
           <button
             type="button"
             onClick={() =>
-              navigate(`/owner/salons/${salonId}/categories/create`)
+              navigate(
+                `/owner/salons/${salonId}/categories/create`,
+              )
             }
-            className="mt-6 inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-5 py-2.5 font-medium text-white hover:bg-emerald-700"
+            className="mt-7 inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-700"
           >
             <Plus size={18} />
             Create Category
@@ -233,24 +279,34 @@ function CategoryListPage() {
           {categories.map((category) => (
             <div
               key={category.id}
-              className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-md"
+              className="group overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-lg"
             >
               {/* ===========================
                   IMAGE
               =========================== */}
 
-              <div className="relative h-48 bg-slate-100">
+              <div className="relative h-52 overflow-hidden bg-slate-100">
                 {category.image ? (
                   <img
                     src={category.image}
                     alt={category.name}
-                    className="h-full w-full object-cover"
+                    className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
                   />
                 ) : (
-                  <div className="flex h-full items-center justify-center">
-                    <FolderOpen size={45} className="text-slate-300" />
+                  <div className="flex h-full flex-col items-center justify-center text-slate-300">
+                    <FolderOpen size={48} />
+
+                    <span className="mt-2 text-sm text-slate-400">
+                      No Image
+                    </span>
                   </div>
                 )}
+
+                {/* Category ID */}
+
+                <div className="absolute left-3 top-3 rounded-lg bg-black/50 px-2.5 py-1 text-xs font-medium text-white backdrop-blur-sm">
+                  #{category.id}
+                </div>
               </div>
 
               {/* ===========================
@@ -258,31 +314,47 @@ function CategoryListPage() {
               =========================== */}
 
               <div className="p-5">
-                <h3 className="truncate text-lg font-semibold text-slate-900">
+                <h3 className="truncate text-lg font-bold text-slate-900">
                   {category.name}
                 </h3>
 
                 <p className="mt-1 text-sm text-slate-500">
-                  Category #{category.id}
+                  Category
                 </p>
 
                 {/* ===========================
-                    ACTIONS
+                    SERVICES BUTTON
                 =========================== */}
 
-                <div className="mt-5 flex gap-2">
-                  {/* Delete */}
+                <button
+                  type="button"
+                  onClick={() =>
+                    handleServices(category.id)
+                  }
+                  className="mt-5 flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700"
+                >
+                  <Scissors size={17} />
+                  Services
+                </button>
 
-                  <button
-                    type="button"
-                    disabled={loading.delete}
-                    onClick={() => handleDeleteCategory(category.id)}
-                    className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-red-50 px-3 py-2.5 text-sm font-medium text-red-600 transition hover:bg-red-100 disabled:cursor-not-allowed disabled:opacity-50"
-                  >
-                    <Trash2 size={17} />
-                    Delete
-                  </button>
-                </div>
+                {/* ===========================
+                    DELETE CATEGORY
+                =========================== */}
+
+                <button
+                  type="button"
+                  disabled={loading.delete}
+                  onClick={() =>
+                    handleDeleteCategory(category.id)
+                  }
+                  className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-red-50 px-4 py-2.5 text-sm font-medium text-red-600 transition hover:bg-red-100 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  <Trash2 size={17} />
+
+                  {loading.delete
+                    ? "Deleting..."
+                    : "Delete Category"}
+                </button>
               </div>
             </div>
           ))}
