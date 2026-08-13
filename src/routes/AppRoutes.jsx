@@ -1,4 +1,3 @@
-
 import { Routes, Route } from "react-router-dom";
 
 // ================= PUBLIC PAGES =================
@@ -10,13 +9,25 @@ import BecomeMemberPage from "../pages/BecomeMemberPage";
 
 // ================= LAYOUTS =================
 
-import CustomerLayout from "../layouts/CustomerLayout";
 import OwnerLayout from "../layouts/OwnerLayout";
 
 // ================= PROTECTED ROUTES =================
 
 import ProtectedRoute from "./ProtectedRoute";
 import RoleProtectedRoute from "./RoleProtectedRoute";
+
+// ================= SHARED SALON / BOOKING PAGES =================
+// These pages are available to CUSTOMER, SALON_OWNER and ADMIN.
+
+import SalonDiscoveryPage from "../pages/common/SalonDiscoveryPage";
+import SalonDetailsPage from "../pages/common/SalonDetailsPage";
+import BookingDetailsPage from "../pages/common/BookingDetailsPage";
+import BookingListPage from "../pages/common/BookingListPage";
+import BookingInformationPage from "../pages/common/BookingInformationPage";
+
+// ================= PAYMENT PAGES =================
+
+import PaymentSuccessPage from "../pages/payment/PaymentSuccessPage";
 
 // ================= OWNER SALON PAGES =================
 
@@ -35,25 +46,12 @@ import ServiceListPage from "../pages/owner/service/ServiceListPage";
 import CreateServicePage from "../pages/owner/service/CreateServicePage";
 import EditServicePage from "../pages/owner/service/EditServicePage";
 
-// ================= CUSTOMER PAGES =================
-
-// import CustomerDashboardPage from "../pages/customer/CustomerDashboardPage";
-// import CustomerBookingsPage from "../pages/customer/CustomerBookingsPage";
-// import CustomerProfilePage from "../pages/customer/CustomerProfilePage";
-
-// ================= OWNER PAGES =================
-
-// import OwnerDashboardPage from "../pages/owner/OwnerDashboardPage";
-// import AnalyticsPage from "../pages/owner/AnalyticsPage";
-
-
 function AppRoutes() {
   return (
     <Routes>
-
-      {/* ===========================
+      {/* =========================================================
           PUBLIC ROUTES
-      =========================== */}
+      ========================================================= */}
 
       <Route path="/" element={<HomePage />} />
 
@@ -61,167 +59,191 @@ function AppRoutes() {
 
       <Route path="/register" element={<RegisterPage />} />
 
-      <Route
-        path="/become-member"
-        element={<BecomeMemberPage />}
-      />
+      <Route path="/become-member" element={<BecomeMemberPage />} />
 
-
-      {/* ===========================
-          PROTECTED ROUTES
-      =========================== */}
+      {/* =========================================================
+          ALL AUTHENTICATED USERS
+          
+          CUSTOMER
+          SALON_OWNER
+          ADMIN
+      ========================================================= */}
 
       <Route element={<ProtectedRoute />}>
+        {/* =======================================================
+            CUSTOMER ROUTES
+        ======================================================= */}
 
-        {/* ===========================
-            CUSTOMER
-        =========================== */}
+        <Route path="/customer">
+          {/* Salon discovery */}
 
-        <Route
-          path="/customer"
-          element={<CustomerLayout />}
-        >
+          <Route path="booking/salons" element={<SalonDiscoveryPage />} />
 
-          {/* <Route
-            index
-            element={<CustomerDashboardPage />}
-          /> */}
+          <Route
+            path="booking/salons/:salonId"
+            element={<SalonDetailsPage />}
+          />
 
-          {/* <Route
-            path="salons"
-            element={<SalonListPage />}
-          /> */}
+          {/* Booking creation */}
 
-          {/* <Route
-            path="bookings"
-            element={<CustomerBookingsPage />}
-          /> */}
+          <Route
+            path="salons/booking/details"
+            element={<BookingDetailsPage />}
+          />
 
-          {/* <Route
-            path="profile"
-            element={<CustomerProfilePage />}
-          /> */}
+          {/* My bookings */}
 
+          <Route path="booking/list" element={<BookingListPage />} />
+
+          {/* Booking information */}
+
+          <Route
+            path="booking/information/:bookingId"
+            element={<BookingInformationPage />}
+          />
+
+          {/* Payment */}
+
+          <Route
+            path="payment-success/:bookingId"
+            element={<PaymentSuccessPage />}
+          />
         </Route>
 
+        {/* =======================================================
+            ADMIN ROUTES
+        ======================================================= */}
 
-        {/* ===========================
-            OWNER
-        =========================== */}
+        <Route path="/admin">
+          {/* Salon discovery */}
+
+          <Route path="booking/salons" element={<SalonDiscoveryPage />} />
+
+          <Route
+            path="booking/salons/:salonId"
+            element={<SalonDetailsPage />}
+          />
+
+          {/* Booking creation */}
+
+          <Route
+            path="salons/booking/details"
+            element={<BookingDetailsPage />}
+          />
+
+          {/* My bookings */}
+
+          <Route path="booking/list" element={<BookingListPage />} />
+
+          {/* Booking information */}
+
+          <Route
+            path="booking/information/:bookingId"
+            element={<BookingInformationPage />}
+          />
+
+          {/* Payment */}
+
+          <Route
+            path="payment-success/:bookingId"
+            element={<PaymentSuccessPage />}
+          />
+        </Route>
+
+        {/* =======================================================
+            SALON OWNER + ADMIN
+            OWNER MANAGEMENT AREA
+        ======================================================= */}
 
         <Route
           element={
-            <RoleProtectedRoute
-              allowedRoles={["SALON_OWNER", "ADMIN"]}
-            />
+            <RoleProtectedRoute allowedRoles={["SALON_OWNER", "ADMIN"]} />
           }
         >
+          <Route path="/owner" element={<OwnerLayout />}>
+            {/* =================================================
+                OWNER SALON MANAGEMENT
+            ================================================= */}
 
-          <Route
-            path="/owner"
-            element={<OwnerLayout />}
-          >
+            <Route path="salons" element={<SalonListPage />} />
 
-            {/* ===========================
-                OWNER DASHBOARD
-            =========================== */}
+            <Route path="salons/create" element={<CreateSalonPage />} />
 
-            {/* <Route
-              index
-              element={<OwnerDashboardPage />}
-            /> */}
+            <Route path="salons/edit/:salonId" element={<EditSalonPage />} />
 
-
-            {/* ===========================
-                SALON MANAGEMENT
-            =========================== */}
-
-            {/* Salon List */}
-
-            <Route
-              path="salons"
-              element={<SalonListPage />}
-            />
-
-            {/* Create Salon */}
-
-            <Route
-              path="salons/create"
-              element={<CreateSalonPage />}
-            />
-
-            {/* Edit Salon */}
-
-            <Route
-              path="salons/edit/:salonId"
-              element={<EditSalonPage />}
-            />
-
-
-            {/* ===========================
-                CATEGORY MANAGEMENT
-            =========================== */}
-
-            {/* Category List */}
+            {/* =================================================
+                OWNER CATEGORY MANAGEMENT
+            ================================================= */}
 
             <Route
               path="salons/:salonId/categories"
               element={<CategoryListPage />}
             />
 
-            {/* Create Category */}
-
             <Route
               path="salons/:salonId/categories/create"
               element={<CreateCategoryPage />}
             />
 
-
-            {/* ===========================
-                SERVICE MANAGEMENT
-            =========================== */}
-
-            {/* Service List */}
+            {/* =================================================
+                OWNER SERVICE MANAGEMENT
+            ================================================= */}
 
             <Route
               path="salons/:salonId/categories/:categoryId/services"
               element={<ServiceListPage />}
             />
 
-            {/* Create Service */}
-
             <Route
               path="salons/:salonId/categories/:categoryId/services/create"
               element={<CreateServicePage />}
             />
-
-            {/* Edit Service */}
 
             <Route
               path="salons/:salonId/categories/:categoryId/services/edit/:serviceId"
               element={<EditServicePage />}
             />
 
+            {/* =================================================
+                OWNER BOOKING FLOW
+            ================================================= */}
 
-            {/* ===========================
-                ANALYTICS
-            =========================== */}
+            <Route path="booking/salons" element={<SalonDiscoveryPage />} />
 
-            {/* <Route
-              path="analytics"
-              element={<AnalyticsPage />}
-            /> */}
+            <Route
+              path="booking/salons/:salonId"
+              element={<SalonDetailsPage />}
+            />
 
+            <Route
+              path="salons/booking/details"
+              element={<BookingDetailsPage />}
+            />
+
+            {/* My bookings */}
+
+            <Route path="booking/list" element={<BookingListPage />} />
+
+            {/* Booking information */}
+
+            <Route
+              path="booking/information/:bookingId"
+              element={<BookingInformationPage />}
+            />
+
+            {/* Payment */}
+
+            <Route
+              path="payment-success/:bookingId"
+              element={<PaymentSuccessPage />}
+            />
           </Route>
-
         </Route>
-
       </Route>
 
-
-      {/* ===========================
-          COMMON PAGES
-      =========================== */}
+      {/* =========================================================
+          FUTURE COMMON ROUTES
+      ========================================================= */}
 
       {/* <Route
         path="/unauthorized"
@@ -232,11 +254,8 @@ function AppRoutes() {
         path="*"
         element={<NotFoundPage />}
       /> */}
-
     </Routes>
   );
 }
 
 export default AppRoutes;
-
-

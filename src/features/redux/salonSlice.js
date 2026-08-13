@@ -4,13 +4,37 @@ import {
   createSalon,
   updateSalon,
   getOwnerSalons,
+  getSalonDirectory,
   deleteSalon,
   deleteSalonImage,
   getSalonById,
 } from "./salonThunk";
 
 const initialState = {
+  /*
+   * =========================================================
+   * OWNER SALON MANAGEMENT
+   * =========================================================
+   *
+   * Existing functionality uses this.
+   *
+   * Do NOT replace this with salon directory data.
+   */
   salons: [],
+
+  /*
+   * =========================================================
+   * SALON DISCOVERY / SERVICES MODULE
+   * =========================================================
+   *
+   * mySalons:
+   * Salons created by the currently logged-in salon owner.
+   *
+   * otherSalons:
+   * Salons belonging to other owners.
+   */
+  mySalons: [],
+  otherSalons: [],
 
   selectedSalon: null,
 
@@ -26,7 +50,6 @@ const initialState = {
     update: false,
     delete: false,
   },
-
 };
 
 const salonSlice = createSlice({
@@ -47,9 +70,9 @@ const salonSlice = createSlice({
   extraReducers: (builder) => {
     builder
 
-      /* ============================
-            CREATE
-    ============================ */
+      /* =====================================================
+          CREATE SALON
+      ===================================================== */
 
       .addCase(createSalon.pending, (state) => {
         state.loading.create = true;
@@ -61,6 +84,9 @@ const salonSlice = createSlice({
         state.loading.create = false;
         state.status = "succeeded";
 
+        /*
+         * Existing owner functionality.
+         */
         state.salons.push(action.payload);
       })
 
@@ -70,9 +96,9 @@ const salonSlice = createSlice({
         state.error = action.payload;
       })
 
-      /* ============================
-            FETCH OWNER SALONS
-    ============================ */
+      /* =====================================================
+          FETCH OWNER SALONS
+      ===================================================== */
 
       .addCase(getOwnerSalons.pending, (state) => {
         state.loading.fetch = true;
@@ -84,6 +110,9 @@ const salonSlice = createSlice({
         state.loading.fetch = false;
         state.status = "succeeded";
 
+        /*
+         * Existing owner salon-management functionality.
+         */
         state.salons = action.payload;
       })
 
@@ -93,9 +122,42 @@ const salonSlice = createSlice({
         state.error = action.payload;
       })
 
-      /* ============================
-            GET SALON BY ID
-    ============================ */
+      /* =====================================================
+          FETCH SALON DIRECTORY
+      ===================================================== */
+
+      .addCase(getSalonDirectory.pending, (state) => {
+        state.loading.fetch = true;
+        state.status = "loading";
+        state.error = null;
+      })
+
+      .addCase(getSalonDirectory.fulfilled, (state, action) => {
+        state.loading.fetch = false;
+        state.status = "succeeded";
+
+        /*
+         * IMPORTANT:
+         *
+         * Do NOT assign this to state.salons.
+         *
+         * state.salons belongs to existing owner
+         * salon-management functionality.
+         */
+
+        state.mySalons = action.payload.mySalons || [];
+        state.otherSalons = action.payload.otherSalons || [];
+      })
+
+      .addCase(getSalonDirectory.rejected, (state, action) => {
+        state.loading.fetch = false;
+        state.status = "failed";
+        state.error = action.payload;
+      })
+
+      /* =====================================================
+          GET SALON BY ID
+      ===================================================== */
 
       .addCase(getSalonById.pending, (state) => {
         state.loading.fetch = true;
@@ -116,9 +178,9 @@ const salonSlice = createSlice({
         state.error = action.payload;
       })
 
-      /* ============================
-            UPDATE
-    ============================ */
+      /* =====================================================
+          UPDATE SALON
+      ===================================================== */
 
       .addCase(updateSalon.pending, (state) => {
         state.loading.update = true;
@@ -148,9 +210,9 @@ const salonSlice = createSlice({
         state.error = action.payload;
       })
 
-      /* ============================
-            DELETE SALON
-    ============================ */
+      /* =====================================================
+          DELETE SALON
+      ===================================================== */
 
       .addCase(deleteSalon.pending, (state) => {
         state.loading.delete = true;
@@ -166,6 +228,16 @@ const salonSlice = createSlice({
           (salon) => salon.id !== action.payload,
         );
 
+        /*
+         * Also remove from directory's mySalons
+         * if it exists there.
+         *
+         * This does not affect existing functionality.
+         */
+        state.mySalons = state.mySalons.filter(
+          (salon) => salon.id !== action.payload,
+        );
+
         if (state.currentSalon?.id === action.payload) {
           state.currentSalon = null;
         }
@@ -177,9 +249,9 @@ const salonSlice = createSlice({
         state.error = action.payload;
       })
 
-      /* ============================
+      /* =====================================================
           DELETE SALON IMAGE
-    ============================ */
+      ===================================================== */
 
       .addCase(deleteSalonImage.pending, (state) => {
         state.loading.update = true;
@@ -196,6 +268,22 @@ const salonSlice = createSlice({
 
         if (salon?.images) {
           delete salon.images[publicId];
+        }
+
+        /*
+         * Also update directory data if the salon
+         * exists there.
+         */
+        const mySalon = state.mySalons.find((s) => s.id === salonId);
+
+        if (mySalon?.images) {
+          delete mySalon.images[publicId];
+        }
+
+        const otherSalon = state.otherSalons.find((s) => s.id === salonId);
+
+        if (otherSalon?.images) {
+          delete otherSalon.images[publicId];
         }
 
         if (

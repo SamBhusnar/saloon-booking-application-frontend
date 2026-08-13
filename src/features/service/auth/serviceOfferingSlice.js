@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   createService,
   updateService,
-  getServicesBySalonId,
+  getServicesBySalonId, 
   getServiceById,
   getServicesByIds,
   getServicesByCategoryId,
@@ -428,6 +428,8 @@ const serviceOfferingSlice = createSlice({
 
         state.success.deleteByCategory = false;
       });
+
+ 
   },
 });
 

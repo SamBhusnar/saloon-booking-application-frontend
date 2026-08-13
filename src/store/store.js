@@ -3,6 +3,7 @@ import authReducer from "../features/auth/authSlice";
 import salonReducer from "../features/redux/salonSlice";
 import categoryReducer from "../features/category/auth/categorySlice";
 import serviceOffering from "../features/service/auth/serviceOfferingSlice";
+import bookingReducer from "../features/booking/auth/bookingSlice"; // Import the booking reducer
 
 export const store = configureStore({
   reducer: {
@@ -10,5 +11,6 @@ export const store = configureStore({
     salon: salonReducer,
     category: categoryReducer,
     serviceOffering: serviceOffering,
+    booking: bookingReducer, // Add the booking reducer here
   },
 });

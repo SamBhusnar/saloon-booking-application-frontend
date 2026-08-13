@@ -1,10 +1,13 @@
+
 import {
   LayoutDashboard,
   Store,
   Scissors,
   CalendarDays,
   Users,
-  BarChart3,
+  CreditCard,
+  Star,
+  Bell,
   User,
 } from "lucide-react";
 
@@ -30,12 +33,13 @@ const navItemClass = ({ isActive }) =>
 
 function OwnerSidebar() {
   return (
-    <aside className="flex h-full w-full flex-col bg-white">
+    <aside className="flex h-full min-h-0 w-full flex-col bg-white">
+
       {/* ===========================
           LOGO / BRAND
       =========================== */}
 
-      <div className="border-b border-slate-200 px-5 py-5">
+      <div className="shrink-0 border-b border-slate-200 px-5 py-5">
         <h2 className="text-2xl font-bold tracking-tight text-emerald-600">
           SalonBook
         </h2>
@@ -51,6 +55,7 @@ function OwnerSidebar() {
 
       <nav className="min-h-0 flex-1 overflow-y-auto px-3 py-5">
         <div className="space-y-6">
+
           {/* ===========================
               DASHBOARD
           =========================== */}
@@ -61,7 +66,11 @@ function OwnerSidebar() {
             </p>
 
             <div className="space-y-1">
-              <NavLink to="/owner" end className={navItemClass}>
+              <NavLink
+                to="/owner"
+                end
+                className={navItemClass}
+              >
                 <LayoutDashboard
                   size={19}
                   strokeWidth={1.8}
@@ -83,18 +92,33 @@ function OwnerSidebar() {
             </p>
 
             <div className="space-y-1">
+
               {/* Salons */}
 
-              <NavLink to="/owner/salons" className={navItemClass}>
-                <Store size={19} strokeWidth={1.8} className="shrink-0" />
+              <NavLink
+                to="/owner/salons"
+                className={navItemClass}
+              >
+                <Store
+                  size={19}
+                  strokeWidth={1.8}
+                  className="shrink-0"
+                />
 
                 <span>Salons</span>
               </NavLink>
 
               {/* Services */}
 
-              <NavLink to="/owner/services" className={navItemClass}>
-                <Scissors size={19} strokeWidth={1.8} className="shrink-0" />
+              <NavLink
+                to="/owner/booking/salons"
+                className={navItemClass}
+              >
+                <Scissors
+                  size={19}
+                  strokeWidth={1.8}
+                  className="shrink-0"
+                />
 
                 <span>Services</span>
               </NavLink>
@@ -111,22 +135,48 @@ function OwnerSidebar() {
             </p>
 
             <div className="space-y-1">
-              {/* Bookings */}
 
-              <NavLink to="/owner/bookings" className={navItemClass}>
+              {/* My Bookings */}
+
+              <NavLink
+                to="/owner/booking/list"
+                className={navItemClass}
+              >
                 <CalendarDays
                   size={19}
                   strokeWidth={1.8}
                   className="shrink-0"
                 />
 
-                <span>Bookings</span>
+                <span>My Bookings</span>
+              </NavLink>
+
+              {/* All Bookings */}
+
+              <NavLink
+                to="/owner/bookings/all"
+                className={navItemClass}
+              >
+                <CalendarDays
+                  size={19}
+                  strokeWidth={1.8}
+                  className="shrink-0"
+                />
+
+                <span>All Bookings</span>
               </NavLink>
 
               {/* Customers */}
 
-              <NavLink to="/owner/customers" className={navItemClass}>
-                <Users size={19} strokeWidth={1.8} className="shrink-0" />
+              <NavLink
+                to="/owner/customers"
+                className={navItemClass}
+              >
+                <Users
+                  size={19}
+                  strokeWidth={1.8}
+                  className="shrink-0"
+                />
 
                 <span>Customers</span>
               </NavLink>
@@ -134,19 +184,70 @@ function OwnerSidebar() {
           </div>
 
           {/* ===========================
-              ANALYTICS
+              PAYMENTS
           =========================== */}
 
           <div>
             <p className="mb-2 px-3 text-[11px] font-semibold uppercase tracking-wider text-slate-400">
-              Analytics
+              Payments
             </p>
 
             <div className="space-y-1">
-              <NavLink to="/owner/analytics" className={navItemClass}>
-                <BarChart3 size={19} strokeWidth={1.8} className="shrink-0" />
 
-                <span>Analytics</span>
+              <NavLink
+                to="/owner/payments"
+                className={navItemClass}
+              >
+                <CreditCard
+                  size={19}
+                  strokeWidth={1.8}
+                  className="shrink-0"
+                />
+
+                <span>Payments</span>
+              </NavLink>
+            </div>
+          </div>
+
+          {/* ===========================
+              CUSTOMER EXPERIENCE
+          =========================== */}
+
+          <div>
+            <p className="mb-2 px-3 text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+              Customer Experience
+            </p>
+
+            <div className="space-y-1">
+
+              {/* Reviews */}
+
+              <NavLink
+                to="/owner/reviews"
+                className={navItemClass}
+              >
+                <Star
+                  size={19}
+                  strokeWidth={1.8}
+                  className="shrink-0"
+                />
+
+                <span>Reviews</span>
+              </NavLink>
+
+              {/* Notifications */}
+
+              <NavLink
+                to="/owner/notifications"
+                className={navItemClass}
+              >
+                <Bell
+                  size={19}
+                  strokeWidth={1.8}
+                  className="shrink-0"
+                />
+
+                <span>Notifications</span>
               </NavLink>
             </div>
           </div>
@@ -161,8 +262,18 @@ function OwnerSidebar() {
             </p>
 
             <div className="space-y-1">
-              <NavLink to="/owner/profile" className={navItemClass}>
-                <User size={19} strokeWidth={1.8} className="shrink-0" />
+
+              {/* Profile */}
+
+              <NavLink
+                to="/owner/profile"
+                className={navItemClass}
+              >
+                <User
+                  size={19}
+                  strokeWidth={1.8}
+                  className="shrink-0"
+                />
 
                 <span>Profile</span>
               </NavLink>

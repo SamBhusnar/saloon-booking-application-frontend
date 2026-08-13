@@ -30,10 +30,27 @@ const authSlice = createSlice({
       state.tokenType = action.payload.tokenType;
       state.expiresIn = action.payload.expiresIn;
       state.refreshExpiresIn = action.payload.refreshExpiresIn;
-      state.status = action.payload.status;
+      state.status = "authenticated";
       state.error = null;
       state.isLoading = false;
     },
+
+    setUnauthenticated: (state) => {
+      state.user = null;
+      state.accessToken = null;
+      state.refreshToken = null;
+
+      state.tokenType = "Bearer";
+
+      state.expiresIn = null;
+      state.refreshExpiresIn = null;
+
+      state.status = "unauthenticated";
+
+      state.error = null;
+      state.isLoading = false;
+    },
+
     logout: (state) => {
       localStorage.removeItem("auth");
 
@@ -58,7 +75,7 @@ const authSlice = createSlice({
         state.status = "loading";
       })
 
-      .addCase(login.fulfilled,    (state, action) => {
+      .addCase(login.fulfilled, (state, action) => {
         localStorage.setItem(
           "auth",
           JSON.stringify({
@@ -103,5 +120,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { restoreSession, logout } = authSlice.actions;
+export const { restoreSession, logout, setUnauthenticated } = authSlice.actions;
 export default authSlice.reducer;
