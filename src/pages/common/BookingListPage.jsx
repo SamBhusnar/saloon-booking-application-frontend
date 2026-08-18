@@ -1,6 +1,6 @@
 
 import React, { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
@@ -21,6 +21,7 @@ import BookingCard from "./BookingCard";
 function BookingListPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const bookingBasePath = useBookingBasePath();
 
@@ -293,6 +294,7 @@ function BookingListPage() {
               <Link
                 key={booking.id}
                 to={bookingInformationPath}
+                state={{ from: location.pathname }} // Pass the current location as state
                 className="
                   group
                   block

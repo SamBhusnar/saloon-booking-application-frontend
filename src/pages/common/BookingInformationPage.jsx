@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
@@ -31,6 +31,10 @@ import useBookingBasePath from "../../hooks/useBookingBasePath";
 function BookingInformationPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  console.log("Current location:", location.pathname);
+  console.log("Current location.from :", location.state?.from);
 
   const { bookingId } = useParams();
 
@@ -83,8 +87,13 @@ function BookingInformationPage() {
      BACK TO BOOKINGS
      ========================================================= */
 
+
   const handleBackToBookings = () => {
-    navigate(`${bookingBasePath}/booking/list`);
+    const from = location.state?.from;
+    if (from) {
+      navigate(from); // Navigate back to the previous page
+    }
+    navigate(-1); // Go back to the previous page
   };
 
   /* =========================================================
@@ -376,7 +385,7 @@ function BookingInformationPage() {
         =================================================== */}
 
         <Link
-          to={`${bookingBasePath}/booking/list`}
+          to={`${location.state?.from || `${bookingBasePath}/bookings/all`}`}
           className="inline-flex items-center gap-2 text-sm font-medium text-slate-500 transition hover:text-emerald-600"
         >
           <ArrowLeft size={17} />
@@ -853,12 +862,12 @@ function BookingInformationPage() {
         </div>
 
         {/* ===================================================
-            BOTTOM NAVIGATION
+            BOTTOM NAVIGATION 
         =================================================== */}
 
         <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-between">
           <Link
-            to={`${bookingBasePath}/booking/list`}
+            to={`${location.state?.from || `${bookingBasePath}/bookings/all`}`}
             className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50"
           >
             <ArrowLeft size={17} />

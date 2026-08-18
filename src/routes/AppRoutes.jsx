@@ -25,6 +25,12 @@ import BookingDetailsPage from "../pages/common/BookingDetailsPage";
 import BookingListPage from "../pages/common/BookingListPage";
 import BookingInformationPage from "../pages/common/BookingInformationPage";
 
+// ================= OWNER BOOKING PAGES =================
+
+// Keep your existing AllBookings import path here.
+// Example only:
+import AllBookings from "../pages/owner/booking/AllBookings";
+
 // ================= PAYMENT PAGES =================
 
 import PaymentSuccessPage from "../pages/payment/PaymentSuccessPage";
@@ -63,7 +69,7 @@ function AppRoutes() {
 
       {/* =========================================================
           ALL AUTHENTICATED USERS
-          
+
           CUSTOMER
           SALON_OWNER
           ADMIN
@@ -131,11 +137,11 @@ function AppRoutes() {
             element={<BookingDetailsPage />}
           />
 
-          {/* My bookings */}
+          {/* Admin's booking list */}
 
           <Route path="booking/list" element={<BookingListPage />} />
 
-          {/* Booking information */}
+          {/* Shared booking information */}
 
           <Route
             path="booking/information/:bookingId"
@@ -215,16 +221,22 @@ function AppRoutes() {
               element={<SalonDetailsPage />}
             />
 
+            <Route path="booking/list" element={<BookingListPage />} />
+
             <Route
               path="salons/booking/details"
               element={<BookingDetailsPage />}
             />
 
-            {/* My bookings */}
+            {/* =================================================
+                OWNER / ADMIN - ALL BOOKINGS
+            ================================================= */}
 
-            <Route path="booking/list" element={<BookingListPage />} />
+            <Route path="bookings/all" element={<AllBookings />} />
 
-            {/* Booking information */}
+            {/* =================================================
+                SHARED BOOKING INFORMATION
+            ================================================= */}
 
             <Route
               path="booking/information/:bookingId"

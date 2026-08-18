@@ -80,6 +80,67 @@ export const getCustomerBookings = createAsyncThunk(
 
 
 /* =========================================================
+   GET salon's BOOKINGS
+========================================================= */
+
+/*
+ * Backend:
+ * 
+ * GET /api/booking/salons
+ *
+ * salon are did identified from JWT on backend.
+ */
+
+export const getBookingsBySalonIdAndAuth = createAsyncThunk(
+  "booking/getBookingsBySalonIdAndAuth",
+
+  async (_, thunkAPI) => {
+    try {
+      const response = await bookingApi.getBookingsBySalonIdAndAuth();
+
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data || {
+          message: "Failed to fetch salon bookings",
+        },
+      );
+    }
+  },
+);
+
+/* =========================================================
+   GET salon's BOOKINGS
+========================================================= */
+
+/*
+ * Backend:
+ * 
+ * GET /api/booking/salons
+ *
+ * salon are did identified from JWT on backend.
+ */
+
+export const getCustomersOfSalonAndAuth = createAsyncThunk(
+  "booking/getCustomersOfSalonAndAuth",
+
+  async (_, thunkAPI) => {
+    try {
+      const response = await bookingApi.getCustomersOfSalonAndAuth();
+
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data || {
+          message: "Failed to fetch salon's customers",
+        },
+      );
+    }
+  },
+);
+
+
+/* =========================================================
    GET BOOKINGS BY SALON
 ========================================================= */
 

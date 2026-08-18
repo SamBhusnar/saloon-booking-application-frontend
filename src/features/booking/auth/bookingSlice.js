@@ -8,6 +8,8 @@ import {
   updateBookingStatus,
   getBookedSlots,
   getBookingReport,
+  getBookingsBySalonIdAndAuth,
+  getCustomersOfSalonAndAuth
 } from "./bookingThunk";
 
 /* =========================================================
@@ -24,6 +26,10 @@ const initialState = {
   customerBookings: [],
 
   salonBookings: [],
+
+  ownerBookings: [],
+
+  users: [],
 
   /* =======================================================
      SELECTED BOOKING
@@ -71,6 +77,8 @@ const initialState = {
 
     fetchCustomer: false,
 
+    fetchOwnerBookings: false,
+
     fetchSalon: false,
 
     fetchById: false,
@@ -80,6 +88,8 @@ const initialState = {
     fetchSlots: false,
 
     fetchReport: false,
+
+    fetchAllUsers: false,
   },
 };
 
@@ -145,6 +155,9 @@ const bookingSlice = createSlice({
       state.bookings = [];
       state.customerBookings = [];
       state.salonBookings = [];
+      state.ownerBookings = [];
+
+      state.users = [];
 
       state.selectedBooking = null;
 
@@ -165,6 +178,8 @@ const bookingSlice = createSlice({
         updateStatus: false,
         fetchSlots: false,
         fetchReport: false,
+        fetchOwnerBookings: false,
+        fetchAllUsers: false,
       };
     },
   },
@@ -244,7 +259,7 @@ const bookingSlice = createSlice({
         /*
          * Keep a general collection as well.
          *
-         * This can be useful if your customer booking
+         * This can be useful if components intentionally
          * pages consume state.booking.bookings.
          */
         state.bookings = action.payload || [];
@@ -382,6 +397,15 @@ const bookingSlice = createSlice({
         if (salonBookingIndex !== -1) {
           state.salonBookings[salonBookingIndex] = updatedBooking;
         }
+
+        /* Update owner bookings. */
+        const ownerBookingIndex = state.ownerBookings.findIndex(
+          (booking) => booking.id === updatedBooking?.id,
+        );
+
+        if (ownerBookingIndex !== -1) {
+          state.ownerBookings[ownerBookingIndex] = updatedBooking;
+        }
       })
 
       .addCase(updateBookingStatus.rejected, (state, action) => {
@@ -446,6 +470,63 @@ const bookingSlice = createSlice({
         state.status = "failed";
 
         state.error = action.payload;
+      })
+
+      .addCase(getBookingsBySalonIdAndAuth.pending, (state) => {
+        state.loading.fetchOwnerBookings = true;
+
+        state.status = "loading";
+
+        state.error = null;
+      })
+
+      .addCase(getBookingsBySalonIdAndAuth.fulfilled, (state, action) => {
+        state.loading.fetchOwnerBookings = false;
+
+        state.status = "succeeded";
+
+        state.ownerBookings = action.payload || [];
+
+        /*
+         * Keep a general collection as well.
+         *
+         * This can be useful if your customer booking
+         * pages consume state.booking.bookings.
+         */
+        state.bookings = action.payload || [];
+      })
+
+      .addCase(getBookingsBySalonIdAndAuth.rejected, (state, action) => {
+        state.loading.fetchOwnerBookings = false;
+
+        state.status = "failed";
+
+        state.error = action.payload; 
+      })
+      .addCase(getCustomersOfSalonAndAuth.pending, (state) => {
+        state.loading.fetchAllUsers = true;
+
+        state.status = "loading";
+
+        state.error = null;
+      })
+
+      .addCase(getCustomersOfSalonAndAuth.fulfilled, (state, action) => {
+        state.loading.fetchAllUsers = false;
+
+        state.status = "succeeded";
+
+        state.users = action.payload || [];
+
+        
+      })
+
+      .addCase(getCustomersOfSalonAndAuth.rejected, (state, action) => {
+        state.loading.fetchAllUsers = false;
+
+        state.status = "failed";
+
+        state.error = action.payload;
       });
   },
 });
@@ -461,6 +542,7 @@ export const {
   clearBookedSlots,
   clearBookingReport,
   resetBookingState,
+  
 } = bookingSlice.actions;
 
 /* =========================================================

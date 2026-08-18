@@ -49,6 +49,32 @@ export const bookingApi = {
   },
 
   /* =======================================================
+     GET ALL BOOKINGS OF A SALON WHICH BELONG TO THE CURRENT LOGGED IN USER
+     
+     GET /booking/salons
+     
+     JWT is automatically sent by the shared Axios
+     interceptor.
+  ======================================================= */
+
+  getBookingsBySalonIdAndAuth() {
+    return api.get(`${BASE_URL}/salons`);
+  },
+
+  /* =======================================================
+     GET ALL customer of all salons which belong to the current logged in salon owner
+     
+     GET /booking/users
+     
+     JWT is automatically sent by the shared Axios
+     interceptor.
+  ======================================================= */
+
+  getCustomersOfSalonAndAuth() {
+    return api.get(`${BASE_URL}/users`);
+  },
+
+  /* =======================================================
      GET BOOKINGS BY SALON
      
      GET /booking/salon?salonId={salonId}
