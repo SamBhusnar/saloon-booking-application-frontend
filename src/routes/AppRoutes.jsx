@@ -55,9 +55,15 @@ import EditServicePage from "../pages/owner/service/EditServicePage";
 // ============================ customerlistpage================
 
 import CustomerListPage from "../pages/owner/booking/CustomerListPage";
+// ============================ paymentlistpage================
 import PaymentListPage from "../pages/payment/components/PaymentListPage";
+// ============================ reviewlistpage================
 
 import ReviewListPage from "../features/review/component/ReviewListPage";
+
+// ============================= profile ===================
+
+import Profile from "../features/profile/Profile";
 
 function AppRoutes() {
   return (
@@ -263,6 +269,10 @@ function AppRoutes() {
             <Route path="salons/payments" element={<PaymentListPage />} />
 
             <Route path="salons/reviews" element={<ReviewListPage />} />
+
+            {/* profile */}
+
+            <Route path="profile" element={<Profile />} />
           </Route>
         </Route>
       </Route>
