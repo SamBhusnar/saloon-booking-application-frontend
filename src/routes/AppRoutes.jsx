@@ -52,6 +52,13 @@ import ServiceListPage from "../pages/owner/service/ServiceListPage";
 import CreateServicePage from "../pages/owner/service/CreateServicePage";
 import EditServicePage from "../pages/owner/service/EditServicePage";
 
+// ============================ customerlistpage================
+
+import CustomerListPage from "../pages/owner/booking/CustomerListPage";
+import PaymentListPage from "../pages/payment/components/PaymentListPage";
+
+import ReviewListPage from "../features/review/component/ReviewListPage";
+
 function AppRoutes() {
   return (
     <Routes>
@@ -228,6 +235,9 @@ function AppRoutes() {
               element={<BookingDetailsPage />}
             />
 
+            {/* owner/salons/customers */}
+            <Route path="salons/customers" element={<CustomerListPage />} />
+
             {/* =================================================
                 OWNER / ADMIN - ALL BOOKINGS
             ================================================= */}
@@ -249,6 +259,10 @@ function AppRoutes() {
               path="payment-success/:bookingId"
               element={<PaymentSuccessPage />}
             />
+
+            <Route path="salons/payments" element={<PaymentListPage />} />
+
+            <Route path="salons/reviews" element={<ReviewListPage />} />
           </Route>
         </Route>
       </Route>

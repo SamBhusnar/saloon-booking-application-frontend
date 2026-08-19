@@ -169,7 +169,7 @@ function OwnerSidebar() {
               {/* Customers */}
 
               <NavLink
-                to="/owner/customers"
+                to="/owner/salons/customers"
                 className={navItemClass}
               >
                 <Users
@@ -195,7 +195,7 @@ function OwnerSidebar() {
             <div className="space-y-1">
 
               <NavLink
-                to="/owner/payments"
+                to="/owner/salons/payments"
                 className={navItemClass}
               >
                 <CreditCard
@@ -223,7 +223,7 @@ function OwnerSidebar() {
               {/* Reviews */}
 
               <NavLink
-                to="/owner/reviews"
+                to="/owner/salons/reviews"
                 className={navItemClass}
               >
                 <Star
