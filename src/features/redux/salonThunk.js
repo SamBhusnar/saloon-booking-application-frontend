@@ -1,4 +1,3 @@
-
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { salonApi } from "./salonApi";
 
@@ -203,9 +202,9 @@ export const getSalonDirectory = createAsyncThunk(
         ? ownerResponse.data
         : [];
 
-      const allSalons = Array.isArray(allResponse.data)
-        ? allResponse.data
-        : [];
+      const allSalons = Array.isArray(allResponse.data) ? allResponse.data : [];
+      console.log("allSalons", allSalons);
+      console.log("mySalons", mySalons);
 
       /*
        * ==========================================
@@ -227,11 +226,7 @@ export const getSalonDirectory = createAsyncThunk(
       const ownerSalonIds = new Set(
         mySalons
           .map((salon) => salon?.id)
-          .filter(
-            (id) =>
-              id !== null &&
-              id !== undefined,
-          ),
+          .filter((id) => id !== null && id !== undefined),
       );
 
       /*
@@ -309,10 +304,7 @@ export const deleteSalonImage = createAsyncThunk(
   "salon/deleteSalonImage",
   async ({ salonId, publicId }, thunkAPI) => {
     try {
-      await salonApi.deleteSalonImage(
-        salonId,
-        publicId,
-      );
+      await salonApi.deleteSalonImage(salonId, publicId);
 
       return {
         salonId,
@@ -369,4 +361,3 @@ export const searchSalon = createAsyncThunk(
     }
   },
 );
-

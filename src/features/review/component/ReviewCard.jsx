@@ -1,165 +1,210 @@
-import { Star, User, Mail, Phone, Store, CalendarDays } from "lucide-react";
+import React, { useState } from "react";
+import {
+  UserRound,
+  Mail,
+  Phone,
+  CalendarDays,
+  Store,
+  Trash2,
+  Loader2,
+  Star,
+} from "lucide-react";
 
-/* =========================================================
-   HELPERS
-========================================================= */
+function ReviewCard({ review, currentUser, onDelete }) {
+  const [isDeleting, setIsDeleting] = useState(false);
 
-function formatDate(dateString) {
-  if (!dateString) {
-    return "N/A";
-  }
+  /*
+   * =========================================================
+   * CURRENT USER CHECK
+   * =========================================================
+   */
 
-  const date = new Date(dateString);
+  const isOwnReview = Number(review.userId) === Number(currentUser?.id);
 
-  if (Number.isNaN(date.getTime())) {
-    return "N/A";
-  }
+  /*
+   * =========================================================
+   * CUSTOMER
+   * =========================================================
+   */
 
-  return date.toLocaleDateString("en-IN", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-  });
-}
+  const customerName = review.userDto?.fullName || "Unknown Customer";
 
-/* =========================================================
-   STAR RATING
-========================================================= */
+  const email = review.userDto?.email || "N/A";
 
-function Rating({ rating }) {
-  const numericRating = Number(rating) || 0;
+  const phone = review.userDto?.phone || "N/A";
+
+  /*
+   * =========================================================
+   * DATE
+   * =========================================================
+   */
+
+  const formattedDate = review.createdAt
+    ? new Date(review.createdAt).toLocaleDateString("en-IN", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      })
+    : "N/A";
+
+  /*
+   * =========================================================
+   * DELETE
+   * =========================================================
+   */
+
+  const handleDelete = async () => {
+    if (!isOwnReview || isDeleting) {
+      return;
+    }
+
+    try {
+      setIsDeleting(true);
+
+      await onDelete(review.id);
+    } finally {
+      setIsDeleting(false);
+    }
+  };
+
+  /*
+   * =========================================================
+   * STARS
+   * =========================================================
+   */
+
+  const rating = Number(review.rating || 0);
 
   return (
-    <div className="flex items-center gap-1">
-      {[1, 2, 3, 4, 5].map((star) => (
-        <Star
-          key={star}
-          size={17}
-          strokeWidth={1.8}
-          className={
-            star <= numericRating
-              ? "fill-amber-400 text-amber-400"
-              : "text-slate-300"
-          }
-        />
-      ))}
-
-      <span className="ml-1 text-sm font-semibold text-slate-700">
-        {numericRating.toFixed(1)}
-      </span>
-    </div>
-  );
-}
-
-/* =========================================================
-   REVIEW CARD
-========================================================= */
-
-function ReviewCard({ review }) {
-  const customer = review?.userDto;
-
-  return (
-    <article className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition-shadow hover:shadow-md">
-      {/* ===================================================
-          TOP SECTION
-      =================================================== */}
+    <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition hover:shadow-md">
+      {/* =====================================================
+          HEADER
+      ====================================================== */}
 
       <div className="flex items-start justify-between gap-4">
-        {/* Customer */}
-
         <div className="flex min-w-0 items-center gap-3">
-          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-emerald-600">
-            <User size={21} strokeWidth={1.8} />
+          {/* Avatar */}
+
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-emerald-50">
+            <UserRound size={20} className="text-emerald-600" />
           </div>
 
+          {/* Customer */}
+
           <div className="min-w-0">
-            <h3 className="truncate text-sm font-semibold text-slate-900">
-              {customer?.fullName || `User #${review?.userId}`}
+            <h3 className="truncate font-semibold text-slate-900">
+              {customerName}
             </h3>
 
-            <p className="mt-0.5 text-xs text-slate-400">
-              Customer #{review?.userId ?? "N/A"}
-            </p>
+            <p className="text-xs text-slate-400">Customer #{review.userId}</p>
           </div>
         </div>
 
         {/* Rating */}
 
-        <Rating rating={review?.rating} />
+        <div className="flex shrink-0 items-center gap-1">
+          <div className="flex">
+            {[1, 2, 3, 4, 5].map((star) => (
+              <Star
+                key={star}
+                size={17}
+                className={
+                  star <= Math.round(rating)
+                    ? "fill-yellow-400 text-yellow-400"
+                    : "text-slate-300"
+                }
+              />
+            ))}
+          </div>
+
+          <span className="ml-1 text-sm font-medium text-slate-600">
+            {rating.toFixed(1)}
+          </span>
+        </div>
       </div>
 
-      {/* ===================================================
+      {/* =====================================================
           REVIEW TEXT
-      =================================================== */}
+      ====================================================== */}
 
       <div className="mt-5 rounded-lg bg-slate-50 p-4">
-        <p className="text-sm leading-6 text-slate-700">
-          {review?.reviewText || "No review text available."}
-        </p>
+        <p className="text-sm leading-6 text-slate-700">{review.reviewText}</p>
       </div>
 
-      {/* ===================================================
-          CUSTOMER INFORMATION
-      =================================================== */}
+      {/* =====================================================
+          INFORMATION
+      ====================================================== */}
 
-      <div className="mt-5 grid gap-3 border-t border-slate-100 pt-4 sm:grid-cols-2">
+      <div className="mt-4 grid grid-cols-1 gap-3 border-t border-slate-100 pt-4 sm:grid-cols-2">
         {/* Email */}
 
         <div className="flex items-center gap-2 text-sm text-slate-500">
-          <Mail
-            size={16}
-            strokeWidth={1.8}
-            className="shrink-0 text-slate-400"
-          />
+          <Mail size={16} className="shrink-0 text-slate-400" />
 
-          <span className="truncate">{customer?.email || "N/A"}</span>
+          <span className="truncate">{email}</span>
         </div>
 
         {/* Phone */}
 
         <div className="flex items-center gap-2 text-sm text-slate-500">
-          <Phone
-            size={16}
-            strokeWidth={1.8}
-            className="shrink-0 text-slate-400"
-          />
+          <Phone size={16} className="shrink-0 text-slate-400" />
 
-          <span>{customer?.phone || "N/A"}</span>
+          <span>{phone}</span>
         </div>
 
         {/* Salon */}
 
         <div className="flex items-center gap-2 text-sm text-slate-500">
-          <Store
-            size={16}
-            strokeWidth={1.8}
-            className="shrink-0 text-slate-400"
-          />
+          <Store size={16} className="shrink-0 text-slate-400" />
 
-          <span>Salon #{review?.salonId ?? "N/A"}</span>
+          <span className="truncate">
+            {review.salonName || `Salon #${review.salonId}`}
+          </span>
         </div>
 
-        {/* Created date */}
+        {/* Date */}
 
         <div className="flex items-center gap-2 text-sm text-slate-500">
-          <CalendarDays
-            size={16}
-            strokeWidth={1.8}
-            className="shrink-0 text-slate-400"
-          />
+          <CalendarDays size={16} className="shrink-0 text-slate-400" />
 
-          <span>{formatDate(review?.createdAt)}</span>
+          <span>{formattedDate}</span>
         </div>
       </div>
 
-      {/* ===================================================
-          REVIEW ID
-      =================================================== */}
+      {/* =====================================================
+          FOOTER
+      ====================================================== */}
 
-      <div className="mt-4 text-xs text-slate-400">
-        Review #{review?.id ?? "N/A"}
+      <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-3">
+        <span className="text-xs text-slate-400">Review #{review.id}</span>
+
+        {/*
+         * IMPORTANT:
+         * Delete button exists ONLY for the review owner.
+         */}
+
+        {isOwnReview && (
+          <button
+            type="button"
+            onClick={handleDelete}
+            disabled={isDeleting}
+            className="flex items-center gap-2 rounded-lg border border-red-200 px-3 py-2 text-xs font-medium text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            {isDeleting ? (
+              <>
+                <Loader2 size={15} className="animate-spin" />
+                Deleting...
+              </>
+            ) : (
+              <>
+                <Trash2 size={15} />
+                Delete
+              </>
+            )}
+          </button>
+        )}
       </div>
-    </article>
+    </div>
   );
 }
 

@@ -4,36 +4,45 @@ import api from "../../../api/axios";
    BASE URL
 ========================================================= */
 
-const BASE_URL = "/reviews";
+const BASE_URL = "reviews";
 
 /* =========================================================
    REVIEW API
 ========================================================= */
 
-export const reviewApi = {
-  /* =======================================================
-     GET ALL REVIEWS OF CURRENT LOGGED-IN SALON OWNER
+/*
+ * GET /api/reviews/salon_owner
+ *
+ * Returns all reviews belonging to salons owned
+ * by the currently authenticated salon owner.
+ */
+export const getReviewsByOwner = async () => {
+  const response = await api.get(`/${BASE_URL}/salon_owner`);
 
-     GET /reviews/salon_owner
+  return response.data;
+};
 
-     Backend identifies the salon owner from JWT.
+/*
+ * GET /api/reviews/salon/{salonIds}
+ *
+ * Example:
+ * /reviews/salon/18,19
+ *
+ * salonIds = [18, 19]
+ */
+export const getReviewsBySalonIds = async (salonIds) => {
+  const ids = salonIds.join(",");
 
-     Returns:
-     [
-       {
-         id,
-         rating,
-         reviewText,
-         salonId,
-         userId,
-         userDto,
-         createdAt,
-         updatedAt
-       }
-     ]
-  ======================================================= */
+  const response = await api.get(`/${BASE_URL}/salon/${ids}`);
 
-  getReviewsBySalonOwner() {
-    return api.get(`${BASE_URL}/salon_owner`);
-  },
+  return response.data;
+};
+
+/*
+ * DELETE /api/reviews/{reviewId}
+ */
+export const deleteReview = async (reviewId) => {
+  const response = await api.delete(`/${BASE_URL}/${reviewId}`);
+
+  return response.data;
 };
