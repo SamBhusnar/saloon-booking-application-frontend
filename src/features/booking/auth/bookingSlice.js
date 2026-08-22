@@ -9,7 +9,17 @@ import {
   getBookedSlots,
   getBookingReport,
   getBookingsBySalonIdAndAuth,
-  getCustomersOfSalonAndAuth
+  getCustomersOfSalonAndAuth,
+
+  // Booking charts
+  getBookingChart,
+  getBookingChartByDate,
+  getBookingChartByDateRange,
+
+  // Earning charts
+  getEarningChart,
+  getEarningChartByDate,
+  getEarningChartByDateRange,
 } from "./bookingThunk";
 
 /* =========================================================
@@ -68,6 +78,10 @@ const initialState = {
 
   error: null,
 
+  bookingChart: null,
+
+  earningChart: null,
+
   /* =======================================================
      LOADING STATES
   ======================================================= */
@@ -90,6 +104,12 @@ const initialState = {
     fetchReport: false,
 
     fetchAllUsers: false,
+
+    /* Booking charts */
+    fetchBookingChart: false,
+
+    /* Earning charts */
+    fetchEarningChart: false,
   },
 };
 
@@ -167,6 +187,10 @@ const bookingSlice = createSlice({
 
       state.bookingReport = null;
 
+      state.bookingChart = null;
+
+      state.earningChart = null;
+
       state.status = "idle";
       state.error = null;
 
@@ -180,7 +204,26 @@ const bookingSlice = createSlice({
         fetchReport: false,
         fetchOwnerBookings: false,
         fetchAllUsers: false,
+
+        fetchBookingChart: false,
+        fetchEarningChart: false,
       };
+    },
+
+    /* =====================================================
+       CLEAR BOOKING CHART
+    ===================================================== */
+
+    clearBookingChart(state) {
+      state.bookingChart = null;
+    },
+
+    /* =====================================================
+       CLEAR EARNING CHART
+    ===================================================== */
+
+    clearEarningChart(state) {
+      state.earningChart = null;
     },
   },
 
@@ -501,7 +544,7 @@ const bookingSlice = createSlice({
 
         state.status = "failed";
 
-        state.error = action.payload; 
+        state.error = action.payload;
       })
       .addCase(getCustomersOfSalonAndAuth.pending, (state) => {
         state.loading.fetchAllUsers = true;
@@ -517,12 +560,190 @@ const bookingSlice = createSlice({
         state.status = "succeeded";
 
         state.users = action.payload || [];
-
-        
       })
 
       .addCase(getCustomersOfSalonAndAuth.rejected, (state, action) => {
         state.loading.fetchAllUsers = false;
+
+        state.status = "failed";
+
+        state.error = action.payload;
+      })
+
+      /* ===================================================
+         GET CURRENT DAY BOOKING CHART
+         
+         GET /api/booking/chart?salonId=...
+      =================================================== */
+
+      .addCase(getBookingChart.pending, (state) => {
+        state.loading.fetchBookingChart = true;
+
+        state.status = "loading";
+
+        state.error = null;
+      })
+
+      .addCase(getBookingChart.fulfilled, (state, action) => {
+        state.loading.fetchBookingChart = false;
+
+        state.status = "succeeded";
+
+        state.bookingChart = action.payload;
+      })
+
+      .addCase(getBookingChart.rejected, (state, action) => {
+        state.loading.fetchBookingChart = false;
+
+        state.status = "failed";
+
+        state.error = action.payload;
+      })
+
+      /* ===================================================
+         GET BOOKING CHART BY DATE
+         
+         GET /api/booking/chart/date
+      =================================================== */
+
+      .addCase(getBookingChartByDate.pending, (state) => {
+        state.loading.fetchBookingChart = true;
+
+        state.status = "loading";
+
+        state.error = null;
+      })
+
+      .addCase(getBookingChartByDate.fulfilled, (state, action) => {
+        state.loading.fetchBookingChart = false;
+
+        state.status = "succeeded";
+
+        state.bookingChart = action.payload;
+      })
+
+      .addCase(getBookingChartByDate.rejected, (state, action) => {
+        state.loading.fetchBookingChart = false;
+
+        state.status = "failed";
+
+        state.error = action.payload;
+      })
+
+      /* ===================================================
+         GET BOOKING CHART BY DATE RANGE
+         
+         GET /api/booking/chart/range
+      =================================================== */
+
+      .addCase(getBookingChartByDateRange.pending, (state) => {
+        state.loading.fetchBookingChart = true;
+
+        state.status = "loading";
+
+        state.error = null;
+      })
+
+      .addCase(getBookingChartByDateRange.fulfilled, (state, action) => {
+        state.loading.fetchBookingChart = false;
+
+        state.status = "succeeded";
+
+        state.bookingChart = action.payload;
+      })
+
+      .addCase(getBookingChartByDateRange.rejected, (state, action) => {
+        state.loading.fetchBookingChart = false;
+
+        state.status = "failed";
+
+        state.error = action.payload;
+      })
+
+      /* ===================================================
+         GET CURRENT DAY EARNING CHART
+         
+         GET /api/booking/earning?salonId=...
+      =================================================== */
+
+      .addCase(getEarningChart.pending, (state) => {
+        state.loading.fetchEarningChart = true;
+
+        state.status = "loading";
+
+        state.error = null;
+      })
+
+      .addCase(getEarningChart.fulfilled, (state, action) => {
+        state.loading.fetchEarningChart = false;
+
+        state.status = "succeeded";
+
+        state.earningChart = action.payload;
+      })
+
+      .addCase(getEarningChart.rejected, (state, action) => {
+        state.loading.fetchEarningChart = false;
+
+        state.status = "failed";
+
+        state.error = action.payload;
+      })
+
+      /* ===================================================
+         GET EARNING CHART BY DATE
+         
+         GET /api/booking/earning/date
+      =================================================== */
+
+      .addCase(getEarningChartByDate.pending, (state) => {
+        state.loading.fetchEarningChart = true;
+
+        state.status = "loading";
+
+        state.error = null;
+      })
+
+      .addCase(getEarningChartByDate.fulfilled, (state, action) => {
+        state.loading.fetchEarningChart = false;
+
+        state.status = "succeeded";
+
+        state.earningChart = action.payload;
+      })
+
+      .addCase(getEarningChartByDate.rejected, (state, action) => {
+        state.loading.fetchEarningChart = false;
+
+        state.status = "failed";
+
+        state.error = action.payload;
+      })
+
+      /* ===================================================
+         GET EARNING CHART BY DATE RANGE
+         
+         GET /api/booking/earning/range
+      =================================================== */
+
+      .addCase(getEarningChartByDateRange.pending, (state) => {
+        state.loading.fetchEarningChart = true;
+
+        state.status = "loading";
+
+        state.error = null;
+      })
+
+      .addCase(getEarningChartByDateRange.fulfilled, (state, action) => {
+        state.loading.fetchEarningChart = false;
+
+        state.status = "succeeded";
+
+        state.earningChart = action.payload;
+      })
+
+      .addCase(getEarningChartByDateRange.rejected, (state, action) => {
+        state.loading.fetchEarningChart = false;
 
         state.status = "failed";
 
@@ -542,7 +763,8 @@ export const {
   clearBookedSlots,
   clearBookingReport,
   resetBookingState,
-  
+  clearBookingChart,
+  clearEarningChart,
 } = bookingSlice.actions;
 
 /* =========================================================

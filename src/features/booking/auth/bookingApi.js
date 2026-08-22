@@ -138,4 +138,142 @@ export const bookingApi = {
       },
     });
   },
+
+  /* =======================================================
+     GET CURRENT DAY BOOKING CHART
+
+     GET /booking/chart?salonId={salonId}
+
+     Returns:
+     BookingChartDto
+  ======================================================= */
+
+  getBookingChart(salonId) {
+    return api.get(`${BASE_URL}/chart/bookings/today`, {
+      params: {
+        salonId,
+      },
+    });
+  },
+
+  /* =======================================================
+     GET BOOKING CHART BY DATE
+
+     GET /booking/chart/date
+         ?salonId={salonId}
+         &date={date}
+
+     Example:
+     /booking/chart/date?salonId=18&date=2026-08-22
+
+     Returns:
+     BookingChartDto
+  ======================================================= */
+
+  getBookingChartByDate(salonId, date) {
+    return api.get(`${BASE_URL}/chart/bookings/date`, {
+      params: {
+        salonId,
+        date,
+      },
+    });
+  },
+
+  /* =======================================================
+     GET BOOKING CHART BY DATE RANGE
+
+     GET /booking/chart/range
+         ?salonId={salonId}
+         &startDate={startDate}
+         &endDate={endDate}
+
+     Example:
+     /booking/chart/range
+         ?salonId=18
+         &startDate=2026-08-01
+         &endDate=2026-08-22
+
+     Returns:
+     BookingChartDto
+  ======================================================= */
+
+  getBookingChartByDateRange(salonId, startDate, endDate) {
+    return api.get(`${BASE_URL}/chart/bookings/range`, {
+      params: {
+        salonId,
+        startDate,
+        endDate,
+      },
+    });
+  },
+
+  /* =======================================================
+     GET CURRENT DAY EARNING CHART
+
+     GET /booking/earning?salonId={salonId}
+
+     Returns:
+     EarningChartDto
+  ======================================================= */
+
+  getEarningChart(salonId) {
+    return api.get(`${BASE_URL}/chart/earnings/today`, {
+      params: {
+        salonId,
+      },
+    });
+  },
+
+  /* =======================================================
+     GET EARNING CHART BY DATE
+
+     GET /booking/earning/date
+         ?salonId={salonId}
+         &date={date}
+
+     Example:
+     /booking/earning/date?salonId=18&date=2026-08-22
+
+     Returns:
+     EarningChartDto
+  ======================================================= */
+
+  getEarningChartByDate(salonId, date) {
+    return api.get(`${BASE_URL}/chart/earnings/date`, {
+      params: {
+        salonId,
+        date,
+      },
+    });
+  },
+
+  /* =======================================================
+     GET EARNING CHART BY DATE RANGE
+
+     GET /booking/earning/range
+         ?salonId={salonId}
+         &startDate={startDate}
+         &endDate={endDate}
+
+     Example:
+     /booking/earning/range
+         ?salonId=18
+         &startDate=2026-08-01
+         &endDate=2026-08-22
+
+     Returns:
+     EarningChartDto
+  ======================================================= */
+
+  getEarningChartByDateRange(salonId, startDate, endDate) {
+    return api.get(`${BASE_URL}/chart/earnings/range`, {
+      params: {
+        salonId,
+        startDate,
+        endDate,
+      },
+    });
+  },
 };
+
+// charts

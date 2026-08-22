@@ -305,3 +305,292 @@ export const getBookingReport = createAsyncThunk(
     }
   },
 );
+
+
+/* =========================================================
+   GET CURRENT DAY BOOKING CHART
+========================================================= */
+
+/*
+ * Backend:
+ *
+ * GET /api/booking/chart?salonId={salonId}
+ *
+ * Response:
+ * BookingChartDto
+ *
+ * Example response:
+ *
+ * {
+ *   salonId: 18,
+ *   salonName: "ABC Salon",
+ *   period: "2026-08-22",
+ *   pendingBookings: 5,
+ *   confirmedBookings: 8
+ * }
+ */
+
+export const getBookingChart = createAsyncThunk(
+  "booking/getBookingChart",
+
+  async (salonId, thunkAPI) => {
+    try {
+      const response = await bookingApi.getBookingChart(
+        salonId,
+      );
+
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data || {
+          message: "Failed to fetch booking chart",
+        },
+      );
+    }
+  },
+);
+
+
+
+
+/* =========================================================
+   GET BOOKING CHART BY DATE
+========================================================= */
+
+/*
+ * Backend:
+ *
+ * GET /api/booking/chart/date
+ *
+ * Query parameters:
+ *
+ * salonId
+ * date
+ *
+ * Example:
+ *
+ * getBookingChartByDate({
+ *   salonId: 18,
+ *   date: "2026-08-22"
+ * })
+ */
+
+export const getBookingChartByDate = createAsyncThunk(
+  "booking/getBookingChartByDate",
+
+  async ({ salonId, date }, thunkAPI) => {
+    try {
+      const response =
+        await bookingApi.getBookingChartByDate(
+          salonId,
+          date,
+        );
+
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data || {
+          message: "Failed to fetch booking chart for date",
+        },
+      );
+    }
+  },
+);
+
+
+
+
+/* =========================================================
+   GET BOOKING CHART BY DATE RANGE
+========================================================= */
+
+/*
+ * Backend:
+ *
+ * GET /api/booking/chart/range
+ *
+ * Query parameters:
+ *
+ * salonId
+ * startDate
+ * endDate
+ *
+ * Example:
+ *
+ * getBookingChartByDateRange({
+ *   salonId: 18,
+ *   startDate: "2026-08-01",
+ *   endDate: "2026-08-22"
+ * })
+ */
+
+export const getBookingChartByDateRange = createAsyncThunk(
+  "booking/getBookingChartByDateRange",
+
+  async (
+    {
+      salonId,
+      startDate,
+      endDate,
+    },
+    thunkAPI,
+  ) => {
+    try {
+      const response =
+        await bookingApi.getBookingChartByDateRange(
+          salonId,
+          startDate,
+          endDate,
+        );
+
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data || {
+          message: "Failed to fetch booking chart for date range",
+        },
+      );
+    }
+  },
+);
+
+
+
+
+/* =========================================================
+   GET CURRENT DAY EARNING CHART
+========================================================= */
+
+/*
+ * Backend:
+ *
+ * GET /api/booking/earning?salonId={salonId}
+ *
+ * Response:
+ * EarningChartDto
+ */
+
+export const getEarningChart = createAsyncThunk(
+  "booking/getEarningChart",
+
+  async (salonId, thunkAPI) => {
+    try {
+      const response =
+        await bookingApi.getEarningChart(
+          salonId,
+        );
+
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data || {
+          message: "Failed to fetch earning chart",
+        },
+      );
+    }
+  },
+);
+
+
+
+/* =========================================================
+   GET EARNING CHART BY DATE
+========================================================= */
+
+/*
+ * Backend:
+ *
+ * GET /api/booking/earning/date
+ *
+ * Query parameters:
+ *
+ * salonId
+ * date
+ */
+
+export const getEarningChartByDate = createAsyncThunk(
+  "booking/getEarningChartByDate",
+
+  async ({ salonId, date }, thunkAPI) => {
+    try {
+      const response =
+        await bookingApi.getEarningChartByDate(
+          salonId,
+          date,
+        );
+
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data || {
+          message: "Failed to fetch earning chart for date",
+        },
+      );
+    }
+  },
+);
+
+
+
+
+
+
+/* =========================================================
+   GET EARNING CHART BY DATE RANGE
+========================================================= */
+
+/*
+ * Backend:
+ *
+ * GET /api/booking/earning/range
+ *
+ * Query parameters:
+ *
+ * salonId
+ * startDate
+ * endDate
+ */
+
+export const getEarningChartByDateRange = createAsyncThunk(
+  "booking/getEarningChartByDateRange",
+
+  async (
+    {
+      salonId,
+      startDate,
+      endDate,
+    },
+    thunkAPI,
+  ) => {
+    try {
+      const response =
+        await bookingApi.getEarningChartByDateRange(
+          salonId,
+          startDate,
+          endDate,
+        );
+
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data || {
+          message: "Failed to fetch earning chart for date range",
+        },
+      );
+    }
+  },
+);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
