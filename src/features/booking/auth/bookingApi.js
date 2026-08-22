@@ -140,6 +140,30 @@ export const bookingApi = {
   },
 
   /* =======================================================
+   GET ALL SALONS BOOKING REPORT
+
+   GET /booking/report/all
+
+   Returns combined report of all salons owned by
+   the currently logged-in salon owner.
+
+   Response:
+   Map<String, String>
+
+   Example:
+   {
+     "cancelled bookings": "5",
+     "total earnings": "25000",
+     "total bookings": "42",
+     "total refund amount": "3000"
+   }
+======================================================= */
+
+  getAllBookingReport() {
+    return api.get(`${BASE_URL}/report/all`);
+  },
+
+  /* =======================================================
      GET CURRENT DAY BOOKING CHART
 
      GET /booking/chart?salonId={salonId}

@@ -65,6 +65,13 @@ import ReviewListPage from "../features/review/component/ReviewListPage";
 
 import Profile from "../features/profile/Profile";
 
+
+// =================  DASHBOARD =================
+
+import Dashboard from "../components/owner/Dashboard";
+
+
+
 function AppRoutes() {
   return (
     <Routes>
@@ -273,6 +280,14 @@ function AppRoutes() {
             {/* profile */}
 
             <Route path="profile" element={<Profile />} />
+          
+          {/* dashboard */}
+
+          <Route path="dashboard" element={<Dashboard />} />
+          
+          
+          
+          
           </Route>
         </Route>
       </Route>

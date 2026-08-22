@@ -1,8 +1,19 @@
 import { Bell, Search } from "lucide-react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 function TopNavbar({ title }) {
   const { user } = useSelector((state) => state.auth);
+
+  const navigate = useNavigate();
+
+
+  const handleClickBtn=(e)=>{
+    e.preventDefault();
+    console.log("clicked");
+    navigate("/owner/profile");
+
+  }
 
   return (
     <header className="sticky top-0 z-40 flex h-16 items-center justify-between border-b border-slate-200 bg-white px-6 shadow-sm">
@@ -41,7 +52,12 @@ function TopNavbar({ title }) {
         </button>
 
         {/* Profile */}
-        <button className="flex items-center gap-3 rounded-xl px-2 py-1 transition hover:bg-slate-100">
+        <button className="flex items-center gap-3 rounded-xl px-2 py-1 transition hover:bg-slate-100"
+        
+        onClick={handleClickBtn}
+        
+        
+        >
           <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-600 text-sm font-semibold text-white">
             {user?.firstName?.charAt(0)?.toUpperCase() || "U"}
           </div>

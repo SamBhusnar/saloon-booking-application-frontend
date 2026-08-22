@@ -114,6 +114,8 @@ const salonSlice = createSlice({
          * Existing owner salon-management functionality.
          */
         state.salons = action.payload;
+        // newly added val
+        state.mySalons = action.payload;
       })
 
       .addCase(getOwnerSalons.rejected, (state, action) => {

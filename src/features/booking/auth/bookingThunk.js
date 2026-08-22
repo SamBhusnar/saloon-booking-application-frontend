@@ -583,7 +583,48 @@ export const getEarningChartByDateRange = createAsyncThunk(
 
 
 
+/* =========================================================
+   GET ALL SALONS BOOKING REPORT
+========================================================= */
 
+/*
+ * Backend:
+ *
+ * GET /api/booking/report/all
+ *
+ * The salon owner is identified from JWT.
+ *
+ * Returns:
+ *
+ * Map<String, String>
+ *
+ * Example:
+ *
+ * {
+ *   "cancelled bookings": "5",
+ *   "total earnings": "25000",
+ *   "total bookings": "42",
+ *   "total refund amount": "3000"
+ * }
+ */
+
+export const getAllBookingReport = createAsyncThunk(
+  "booking/getAllBookingReport",
+
+  async (_, thunkAPI) => {
+    try {
+      const response = await bookingApi.getAllBookingReport();
+
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        error.response?.data || {
+          message: "Failed to fetch all booking report",
+        },
+      );
+    }
+  },
+);
 
 
 

@@ -8,6 +8,7 @@ import {
   updateBookingStatus,
   getBookedSlots,
   getBookingReport,
+  getAllBookingReport,
   getBookingsBySalonIdAndAuth,
   getCustomersOfSalonAndAuth,
 
@@ -83,6 +84,12 @@ const initialState = {
   earningChart: null,
 
   /* =======================================================
+   ALL SALONS BOOKING REPORT
+======================================================= */
+
+  allBookingReport: null,
+
+  /* =======================================================
      LOADING STATES
   ======================================================= */
 
@@ -110,6 +117,7 @@ const initialState = {
 
     /* Earning charts */
     fetchEarningChart: false,
+    fetchAllReport: false,
   },
 };
 
@@ -194,6 +202,8 @@ const bookingSlice = createSlice({
       state.status = "idle";
       state.error = null;
 
+      state.allBookingReport = null;
+
       state.loading = {
         create: false,
         fetchCustomer: false,
@@ -207,6 +217,7 @@ const bookingSlice = createSlice({
 
         fetchBookingChart: false,
         fetchEarningChart: false,
+        fetchAllReport: false,
       };
     },
 
@@ -744,6 +755,36 @@ const bookingSlice = createSlice({
 
       .addCase(getEarningChartByDateRange.rejected, (state, action) => {
         state.loading.fetchEarningChart = false;
+
+        state.status = "failed";
+
+        state.error = action.payload;
+      })
+
+      /* ===================================================
+   GET ALL SALONS BOOKING REPORT
+
+   GET /api/booking/report/all
+=================================================== */
+
+      .addCase(getAllBookingReport.pending, (state) => {
+        state.loading.fetchAllReport = true;
+
+        state.status = "loading";
+
+        state.error = null;
+      })
+
+      .addCase(getAllBookingReport.fulfilled, (state, action) => {
+        state.loading.fetchAllReport = false;
+
+        state.status = "succeeded";
+
+        state.allBookingReport = action.payload || {};
+      })
+
+      .addCase(getAllBookingReport.rejected, (state, action) => {
+        state.loading.fetchAllReport = false;
 
         state.status = "failed";
 
